@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "primary-fixed-dim": "#c1c8c2",
+                  "primary-container": "#161d19",
+                  "on-secondary": "#ffffff",
+                  "error": "#ba1a1a",
+                  "tertiary-container": "#191d15",
+                  "on-primary-fixed": "#161d19",
+                  "surface-container": "#efeeea",
+                  "surface-variant": "#e3e2df",
+                  "outline-variant": "#c4c7c3",
+                  "on-secondary-container": "#6f1a00",
+                  "tertiary-fixed": "#e0e4d7",
+                  "surface-container-highest": "#e3e2df",
+                  "inverse-on-surface": "#f2f1ed",
+                  "on-surface-variant": "#434844",
+                  "background": "#faf9f5",
+                  "on-background": "#1b1c1a",
+                  "surface-dim": "#dbdad6",
+                  "secondary-fixed-dim": "#ffb5a0",
+                  "surface-container-lowest": "#ffffff",
+                  "on-tertiary-container": "#81857a",
+                  "tertiary-fixed-dim": "#c4c8bb",
+                  "on-tertiary-fixed": "#191d15",
+                  "on-tertiary": "#ffffff",
+                  "secondary-container": "#fd7f5a",
+                  "surface-container-high": "#e9e8e4",
+                  "on-error": "#ffffff",
+                  "on-tertiary-fixed-variant": "#44483f",
+                  "primary-fixed": "#dde4dd",
+                  "tertiary": "#000000",
+                  "on-primary-fixed-variant": "#414844",
+                  "on-error-container": "#93000a",
+                  "outline": "#747874",
+                  "secondary-fixed": "#ffdbd1",
+                  "on-secondary-fixed": "#3b0900",
+                  "on-primary-container": "#7e8680",
+                  "surface-container-low": "#f4f4f0",
+                  "surface-tint": "#59605b",
+                  "surface": "#faf9f5",
+                  "primary": "#000000",
+                  "on-secondary-fixed-variant": "#832608",
+                  "error-container": "#ffdad6",
+                  "on-surface": "#1b1c1a",
+                  "on-primary": "#ffffff",
+                  "inverse-primary": "#c1c8c2",
+                  "secondary": "#a43d1e",
+                  "surface-bright": "#faf9f5",
+                  "inverse-surface": "#2f312e"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.125rem",
+                  "lg": "0.25rem",
+                  "xl": "0.5rem",
+                  "full": "0.75rem"
+          },
+          "spacing": {
+                  "stack-md": "16px",
+                  "stack-lg": "32px",
+                  "unit": "4px",
+                  "stack-sm": "8px",
+                  "section-gap": "80px",
+                  "margin-page": "40px",
+                  "gutter": "24px"
+          },
+          "fontFamily": {
+                  "data-ui": ["JetBrains Mono"],
+                  "body-lg": ["Plus Jakarta Sans"],
+                  "headline-lg-mobile": ["DM Sans"],
+                  "display-xl": ["DM Sans"],
+                  "headline-md": ["DM Sans"],
+                  "label-caps": ["JetBrains Mono"],
+                  "headline-lg": ["DM Sans"],
+                  "body-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+                  "data-ui": ["14px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                  "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                  "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                  "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                  "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                  "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.08em", "fontWeight": "600"}],
+                  "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    input[type='range'] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+      cursor: pointer;
+    }
+    input[type='range']::-webkit-slider-runnable-track {
+      background: #c4c7c3;
+      height: 2px;
+    }
+    input[type='range']::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      margin-top: -7px;
+      background-color: #000000;
+      height: 16px;
+      width: 16px;
+      border-radius: 2px;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c4c7c3;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- SideNavBar Component -->
+<aside class="fixed left-0 top-0 h-full w-[280px] bg-surface-container border-r border-outline-variant flex flex-col p-stack-md z-50">
+<div class="mb-stack-lg px-unit">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Portfolio CMS</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-1">Senior Web Engineer</p>
+</div>
+<nav class="flex-1 space-y-1 overflow-y-auto custom-scrollbar">
+<!-- Active state logic: Skills is current page -->
+<a class="flex items-center gap-3 px-3 py-3 hover:bg-surface-container-high transition-colors rounded-lg text-on-surface-variant group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 hover:bg-surface-container-high transition-colors rounded-lg text-on-surface-variant group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="view_quilt">view_quilt</span>
+<span class="font-body-md">Hero Section</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 hover:bg-surface-container-high transition-colors rounded-lg text-on-surface-variant group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="account_circle">account_circle</span>
+<span class="font-body-md">Profile &amp; Biography</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 hover:bg-surface-container-high transition-colors rounded-lg text-on-surface-variant group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="work_history">work_history</span>
+<span class="font-body-md">Projects</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 hover:bg-surface-container-high transition-colors rounded-lg text-on-surface-variant group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="description">description</span>
+<span class="font-body-md">Experience</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 bg-surface-container-high text-primary font-bold rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-body-md">Skills</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-stack-md space-y-1">
+<a class="flex items-center gap-3 px-3 py-3 hover:bg-surface-container-high transition-colors rounded-lg text-on-surface-variant group" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 hover:bg-surface-container-high transition-colors rounded-lg text-error group" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-md">Log Out</span>
+</a>
+<button class="w-full mt-stack-md bg-primary text-on-primary py-3 rounded-lg font-label-caps text-label-caps tracking-widest hover:opacity-90 transition-opacity">
+        Preview Portfolio
+      </button>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<main class="ml-[280px] min-h-screen flex flex-col">
+<!-- TopAppBar Component -->
+<header class="sticky top-0 right-0 z-40 w-full bg-surface border-b border-outline-variant flex items-center justify-between px-margin-page py-stack-md">
+<div class="flex items-center gap-gutter flex-1">
+<span class="font-headline-md text-headline-md font-bold text-primary">Portfolio Editor</span>
+<div class="relative w-full max-w-md ml-stack-lg">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:outline-none focus:ring-1 focus:ring-secondary text-body-md" placeholder="Search skills or tags..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="flex items-center gap-unit mr-stack-md">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+<div class="flex items-center gap-stack-sm mr-stack-lg">
+<button class="px-4 py-2 text-primary font-label-caps text-label-caps hover:bg-surface-container-high rounded transition-colors">Discard</button>
+<button class="px-6 py-2 bg-primary text-on-primary font-label-caps text-label-caps rounded hover:opacity-90 transition-opacity">Save Changes</button>
+</div>
+<div class="flex items-center gap-3 pl-stack-md border-l border-outline-variant">
+<div class="text-right">
+<p class="font-label-caps text-[10px] leading-tight text-on-surface-variant">Admin</p>
+<p class="font-body-md text-sm font-semibold">Nanang Pernata</p>
+</div>
+<img alt="Nanang Eka Cahya Pernata" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A professional studio portrait of a senior software engineer with a clean-cut look, wearing a minimalist black turtleneck. The lighting is high-end editorial style with soft shadows, set against a warm, neutral gray background. The overall aesthetic is sophisticated, modern, and trustworthy, perfectly matching the minimalist CMS dashboard design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx1YnO3QihnsXQnc4TOOTqv9O2JehBbrP5DXwdCwzSkW8vcMP68fXMAUf8UD9tTkxMzKowmV-XJtjsdjmdbQhw7OpLASFoKk0Jgue5pUbG_qKE87_2M9A6yKOo-FQBzc0-GpNHhoRcohakVlm4lZ5UeKOWjzrEj-wPxu1skb4N0r56pphKPZ0I4DQf4UUYsleDrHORE3pdsu3J_CcLpnqy4LOi0k6HtQjiwhTZgiBI-LSr6HVjPsaohjJQxImx88iHiVK1plZcuHAk"/>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="flex-1 p-margin-page bg-background">
+<div class="max-w-[1100px] mx-auto">
+<div class="flex justify-between items-end mb-stack-lg">
+<div>
+<p class="font-label-caps text-label-caps text-secondary uppercase mb-2">Editor</p>
+<h2 class="font-headline-lg text-headline-lg text-on-background">Skill Management</h2>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 border border-primary text-primary font-label-caps text-label-caps hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+            New Category
+          </button>
+</div>
+<!-- Bento Grid Skills Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Category: Backend -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest border border-outline-variant p-stack-lg">
+<div class="flex items-center justify-between mb-stack-lg border-b border-outline-variant pb-stack-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="storage">storage</span>
+<h3 class="font-headline-md text-headline-md">Backend Development</h3>
+</div>
+<span class="font-data-ui text-data-ui bg-surface-container px-3 py-1 rounded">5 Skills</span>
+</div>
+<div class="space-y-stack-lg">
+<!-- Skill Row -->
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Node.js &amp; Express</label>
+<span class="font-data-ui text-data-ui text-primary">95%</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="95"/>
+</div>
+<!-- Skill Row -->
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Python (Django/FastAPI)</label>
+<span class="font-data-ui text-data-ui text-primary">88%</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="88"/>
+</div>
+<!-- Skill Row -->
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">PostgreSQL &amp; MongoDB</label>
+<span class="font-data-ui text-data-ui text-primary">92%</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="92"/>
+</div>
+<!-- Skill Row -->
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Microservices Architecture</label>
+<span class="font-data-ui text-data-ui text-primary">80%</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="80"/>
+</div>
+</div>
+<button class="mt-stack-lg flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[18px]" data-icon="add_circle">add_circle</span> Add backend skill
+            </button>
+</div>
+<!-- Category: Stats & Metadata (Asymmetric Layout) -->
+<div class="col-span-12 lg:col-span-4 space-y-gutter">
+<div class="bg-surface-container-high p-stack-lg border border-outline-variant">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-4">Skill Distribution</h4>
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-4">
+<div class="w-3 h-3 bg-primary"></div>
+<span class="font-body-md flex-1">Engineering</span>
+<span class="font-data-ui">64%</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-3 h-3 bg-secondary"></div>
+<span class="font-body-md flex-1">Design</span>
+<span class="font-data-ui">22%</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-3 h-3 bg-outline"></div>
+<span class="font-body-md flex-1">Leadership</span>
+<span class="font-data-ui">14%</span>
+</div>
+</div>
+</div>
+<div class="bg-tertiary-fixed p-stack-lg border border-outline-variant">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="auto_awesome">auto_awesome</span>
+<h4 class="font-headline-md text-headline-md mb-2">Expert Advice</h4>
+<p class="font-body-md text-sm text-on-tertiary-fixed-variant">Updating your Infrastructure skills might increase your visibility for DevOps-related queries by 15%.</p>
+</div>
+</div>
+<!-- Category: Infrastructure -->
+<div class="col-span-12 md:col-span-6 bg-surface-container-lowest border border-outline-variant p-stack-lg">
+<div class="flex items-center justify-between mb-stack-lg border-b border-outline-variant pb-stack-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="cloud">cloud</span>
+<h3 class="font-headline-md text-headline-md">Infrastructure</h3>
+</div>
+</div>
+<div class="space-y-stack-lg">
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">AWS (S3, EC2, Lambda)</label>
+<span class="font-data-ui text-data-ui">85%</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="85"/>
+</div>
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Docker &amp; Kubernetes</label>
+<span class="font-data-ui text-data-ui">72%</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="72"/>
+</div>
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">CI/CD Pipelines</label>
+<span class="font-data-ui text-data-ui">90%</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="90"/>
+</div>
+</div>
+</div>
+<!-- Category: Frontend -->
+<div class="col-span-12 md:col-span-6 bg-surface-container-lowest border border-outline-variant p-stack-lg">
+<div class="flex items-center justify-between mb-stack-lg border-b border-outline-variant pb-stack-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="brush">brush</span>
+<h3 class="font-headline-md text-headline-md">Frontend</h3>
+</div>
+</div>
+<div class="space-y-stack-lg">
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">React &amp; Next.js</label>
+<span class="font-data-ui text-data-ui">98%</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="98"/>
+</div>
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Tailwind CSS</label>
+<span class="font-data-ui text-data-ui">100%</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="100"/>
+</div>
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">TypeScript</label>
+<span class="font-data-ui text-data-ui">94%</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="94"/>
+</div>
+</div>
+</div>
+<!-- Feature Card: Visual Representation -->
+<div class="col-span-12 bg-primary-container text-on-primary-fixed border border-primary-container p-stack-lg relative overflow-hidden flex items-center">
+<div class="relative z-10 max-w-lg">
+<h3 class="font-headline-lg text-white mb-2">Real-time Preview</h3>
+<p class="font-body-lg text-primary-fixed-dim mb-6">Your skills are currently visualized as a Radar Chart on the public portfolio page. Changes here update immediately.</p>
+<button class="bg-secondary text-on-secondary px-6 py-2 rounded-lg font-label-caps text-label-caps hover:opacity-90 transition-opacity">Toggle Radar Chart</button>
+</div>
+<div class="absolute right-0 top-0 bottom-0 w-1/2 opacity-40">
+<img alt="Data Visualization" class="w-full h-full object-cover" data-alt="A clean and artistic digital visualization of a radar chart or spider map on a dark screen. The lines are thin and precise in a bright sage green and terra cotta color, representing data metrics. The background is a deep charcoal, and the overall feel is technical, high-end, and editorial, suggesting a complex but elegant system under the hood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwWkIEnbWpG64sRCuEuNOqY-9cUEW2W8itgK0D9iFlZ7EuKdOMiWOYi3T4KicsU2ICc3BoHzeVxO-hc0r4PigRfuWV6HBEVl8kha9d70d31oTlsqe2KJlNDZlTY1CI39M3KrZvJK72Q3poBbM7hkZt2RDwDiwGs7gheLR83aCLeNb3TCpReB_0NNwlKA-qPet01u2iQ64wMy9IDb5ty_IA_ZsAlhRh96Stx6yZQzC7H4WRrN8wnKm12TmLxMjLxIuGjZNI1O046f24"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

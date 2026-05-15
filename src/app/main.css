@@ -1,0 +1,276 @@
+/* Main Portfolio Site Styles */
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #121915;
+  --color-terra: #E86F4C;
+  --color-canvas: #F8F7F3;
+  --color-sage: #D8DCCF;
+  --color-olive: #5D6B51;
+  --color-brick: #B54D36;
+
+  --font-display: "DM Sans", sans-serif;
+  --font-body: "Plus Jakarta Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-canvas text-ink font-body antialiased;
+    margin: 0;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display font-bold;
+    line-height: 1.1;
+  }
+}
+
+/* Site Header */
+.site-header {
+  @apply fixed top-0 left-0 w-full flex justify-between items-center px-[5vw] py-8 z-50 transition-all duration-300;
+  background: rgba(248, 247, 243, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.brand {
+  @apply font-display font-bold text-2xl tracking-tighter;
+}
+
+.site-header nav {
+  @apply flex gap-8;
+}
+
+.site-header nav a {
+  @apply font-mono text-[10px] uppercase tracking-widest hover:text-terra transition-colors;
+}
+
+/* Hero Section */
+.hero {
+  @apply relative min-h-screen flex flex-col justify-center px-[5vw] pt-24 pb-12 overflow-hidden;
+}
+
+#system-canvas {
+  @apply absolute top-0 left-0 w-full h-full -z-10 opacity-30;
+}
+
+.hero-inner {
+  @apply flex flex-col lg:flex-row gap-16 items-center;
+}
+
+.hero-content {
+  @apply flex-1 max-w-2xl;
+}
+
+.eyebrow {
+  @apply font-mono text-xs uppercase tracking-[0.2em] text-terra mb-6 block;
+}
+
+.hero h1 {
+  @apply text-6xl lg:text-8xl mb-8 tracking-tighter;
+}
+
+.hero-copy {
+  @apply text-xl lg:text-2xl text-ink/70 leading-relaxed mb-12 max-w-xl;
+}
+
+.hero-actions {
+  @apply flex flex-wrap gap-4 mb-12;
+}
+
+.button {
+  @apply px-8 py-4 rounded font-mono text-xs uppercase tracking-widest transition-all duration-300 inline-block text-center;
+}
+
+.button.primary {
+  @apply bg-ink text-canvas hover:opacity-90;
+}
+
+.button.secondary {
+  @apply border border-ink text-ink hover:bg-ink hover:text-canvas;
+}
+
+.availability {
+  @apply flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[10px] opacity-60;
+}
+
+.availability span {
+  @apply uppercase tracking-widest text-terra font-bold;
+}
+
+/* Hero Skills Panel */
+.hero-skills-panel {
+  @apply bg-canvas border border-ink/10 p-10 lg:w-[420px] shadow-2xl;
+}
+
+.profile-summary {
+  @apply flex items-center gap-6 mb-10 pb-10 border-b border-ink/10;
+}
+
+.profile-avatar {
+  @apply w-20 h-20 rounded-full overflow-hidden border border-ink/10;
+}
+
+.profile-summary strong {
+  @apply block font-display text-lg mt-1;
+}
+
+.hero-skill-list article {
+  @apply mb-6 last:mb-0;
+}
+
+.hero-skill-list article span {
+  @apply font-mono text-[9px] uppercase tracking-widest text-terra block mb-1;
+}
+
+.hero-skill-list article strong {
+  @apply font-body text-sm font-semibold;
+}
+
+/* Metrics Section */
+.metrics {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-y border-ink/10;
+}
+
+.metrics article {
+  @apply p-10 border-r last:border-r-0 border-ink/10;
+}
+
+.metrics strong {
+  @apply font-mono text-[10px] uppercase tracking-widest text-terra block mb-4;
+}
+
+.metrics span {
+  @apply font-display text-lg font-bold leading-tight;
+}
+
+/* Generic Section Styles */
+.section {
+  @apply px-[5vw] py-24 lg:py-32;
+}
+
+.section-kicker {
+  @apply font-mono text-xs uppercase tracking-[0.2em] text-terra mb-6 block;
+}
+
+.section h2 {
+  @apply text-4xl lg:text-6xl mb-12 tracking-tighter max-w-4xl;
+}
+
+/* Intro Section */
+.intro {
+  @apply grid lg:grid-cols-2 gap-16;
+}
+
+.intro p {
+  @apply text-xl lg:text-2xl text-ink/70 leading-relaxed;
+}
+
+/* Process Grid */
+.process-grid {
+  @apply grid md:grid-cols-3 gap-12;
+}
+
+.process-grid article {
+  @apply space-y-4;
+}
+
+.process-grid span {
+  @apply font-display text-5xl opacity-10;
+}
+
+.process-grid h3 {
+  @apply text-2xl;
+}
+
+/* Work Grid */
+.work-grid {
+  @apply grid lg:grid-cols-2 gap-8;
+}
+
+.work-card {
+  @apply bg-canvas border border-ink/10 p-12 hover:border-terra transition-colors duration-500;
+}
+
+.card-topline {
+  @apply flex justify-between font-mono text-[10px] uppercase tracking-widest mb-10 opacity-50;
+}
+
+.work-card h3 {
+  @apply text-3xl mb-6;
+}
+
+.result-line {
+  @apply font-body font-bold text-terra mb-4;
+}
+
+.proof-list {
+  @apply mt-10 space-y-6 pt-10 border-t border-ink/10;
+}
+
+.proof-list dt {
+  @apply font-mono text-[9px] uppercase tracking-widest text-terra mb-1;
+}
+
+.proof-list dd {
+  @apply font-body text-sm font-semibold;
+}
+
+.text-link {
+  @apply font-mono text-[10px] uppercase tracking-widest text-terra hover:underline mt-8 block;
+}
+
+/* Decisions Grid */
+.decision-grid {
+  @apply grid md:grid-cols-2 gap-8;
+}
+
+.decision-grid article {
+  @apply border border-ink/10 p-10 hover:bg-ink hover:text-canvas transition-all duration-500;
+}
+
+.decision-grid h3 {
+  @apply text-2xl mb-4;
+}
+
+.decision-grid p {
+  @apply opacity-70 mb-6;
+}
+
+.decision-grid strong {
+  @apply block font-mono text-[9px] uppercase tracking-widest text-terra;
+}
+
+/* Contact Section */
+.contact {
+  @apply grid lg:grid-cols-2 gap-16 px-[5vw] py-32 bg-ink text-canvas;
+}
+
+.contact h2 {
+  @apply text-4xl lg:text-6xl text-canvas;
+}
+
+.contact-actions {
+  @apply flex gap-6 mt-12;
+}
+
+.button.light {
+  @apply bg-canvas text-ink;
+}
+
+.button.secondary.light {
+  @apply border-canvas text-canvas hover:bg-canvas hover:text-ink;
+}
+
+.contact-panel {
+  @apply flex flex-col justify-end gap-4;
+}
+
+.contact-panel a {
+  @apply text-3xl lg:text-5xl font-display font-bold hover:text-terra transition-colors;
+}
+
+/* Footer */
+footer {
+  @apply px-[5vw] py-12 flex justify-between items-center font-mono text-[10px] uppercase tracking-widest opacity-50;
+}

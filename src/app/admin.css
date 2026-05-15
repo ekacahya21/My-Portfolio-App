@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+@import "tailwindcss";
+
+@theme {
+  /* Site Specific Tokens */
+  --color-ink: #121915;
+  --color-terra: #E86F4C;
+  --color-canvas: #F8F7F3;
+  --color-sage: #D8DCCF;
+  --color-olive: #5D6B51;
+
+  /* Layout Tokens */
+  --color-background: var(--color-canvas);
+  --color-surface: #FFFFFF;
+  --color-surface-container: #F3F1EA;
+  --color-surface-container-high: #EAE7DC;
+  --color-surface-container-lowest: #FAF9F6;
+  --color-primary: var(--color-ink);
+  --color-secondary: var(--color-terra);
+  --color-on-primary: var(--color-canvas);
+  --color-on-surface: var(--color-ink);
+  --color-on-surface-variant: #5E6962;
+  --color-outline: #D9D2C5;
+  --color-outline-variant: rgba(18, 25, 21, 0.08);
+
+  /* Typography */
+  --font-display: "DM Sans", sans-serif;
+  --font-headline: "DM Sans", sans-serif;
+  --font-body: "Plus Jakarta Sans", sans-serif;
+  --font-label: "JetBrains Mono", monospace;
+}
+
+@utility font-display-xl {
+  font-family: var(--font-display);
+  font-size: 8rem;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+}
+
+@utility font-headline-md {
+  font-family: var(--font-headline);
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+@utility font-body-md {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@utility font-label-caps {
+  font-family: var(--font-label);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+}
+
+/* Base resets for Admin area */
+body {
+  @apply bg-background text-on-surface font-body;
+  margin: 0;
+}

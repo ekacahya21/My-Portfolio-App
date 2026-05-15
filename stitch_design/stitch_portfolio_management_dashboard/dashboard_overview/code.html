@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Portfolio Editor - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "tertiary": "#000000",
+                    "surface-dim": "#dbdad6",
+                    "error": "#ba1a1a",
+                    "primary": "#000000",
+                    "on-secondary-container": "#6f1a00",
+                    "surface-container": "#efeeea",
+                    "surface-container-highest": "#e3e2df",
+                    "surface": "#faf9f5",
+                    "surface-bright": "#faf9f5",
+                    "primary-fixed-dim": "#c1c8c2",
+                    "on-tertiary": "#ffffff",
+                    "outline": "#747874",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#161d19",
+                    "on-primary-container": "#7e8680",
+                    "surface-variant": "#e3e2df",
+                    "on-tertiary-fixed": "#191d15",
+                    "background": "#faf9f5",
+                    "surface-container-high": "#e9e8e4",
+                    "surface-container-low": "#f4f4f0",
+                    "on-surface": "#1b1c1a",
+                    "secondary-container": "#fd7f5a",
+                    "on-primary-fixed-variant": "#414844",
+                    "inverse-surface": "#2f312e",
+                    "secondary-fixed": "#ffdbd1",
+                    "on-background": "#1b1c1a",
+                    "on-primary-fixed": "#161d19",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed": "#dde4dd",
+                    "tertiary-container": "#191d15",
+                    "on-tertiary-fixed-variant": "#44483f",
+                    "tertiary-fixed": "#e0e4d7",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-tint": "#59605b",
+                    "outline-variant": "#c4c7c3",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#c4c8bb",
+                    "inverse-on-surface": "#f2f1ed",
+                    "secondary": "#a43d1e",
+                    "on-surface-variant": "#434844",
+                    "secondary-fixed-dim": "#ffb5a0",
+                    "on-secondary-fixed-variant": "#832608",
+                    "on-tertiary-container": "#81857a",
+                    "inverse-primary": "#c1c8c2",
+                    "on-secondary-fixed": "#3b0900",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "stack-lg": "32px",
+                    "unit": "4px",
+                    "margin-page": "40px",
+                    "gutter": "24px",
+                    "stack-sm": "8px",
+                    "section-gap": "80px"
+            },
+            "fontFamily": {
+                    "headline-md": ["DM Sans"],
+                    "label-caps": ["JetBrains Mono"],
+                    "headline-lg": ["DM Sans"],
+                    "data-ui": ["JetBrains Mono"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "display-xl": ["DM Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["DM Sans"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.08em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "data-ui": ["14px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #faf9f5;
+            color: #1b1c1a;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full w-[280px] bg-surface-container border-r border-outline-variant flex flex-col p-stack-md z-50">
+<!-- Brand Header -->
+<div class="mb-stack-lg px-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">edit_note</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Portfolio CMS</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-70">Senior Web Engineer</p>
+</div>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded text-primary font-bold bg-surface-container-high transition-colors scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="view_quilt">view_quilt</span>
+<span class="font-body-md">Hero Section</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-body-md">Profile &amp; Biography</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="work_history">work_history</span>
+<span class="font-body-md">Projects</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-body-md">Experience</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-body-md">Skills</span>
+</a>
+</nav>
+<!-- CTA & Footer -->
+<div class="mt-auto space-y-4 pt-stack-md border-t border-outline-variant">
+<button class="w-full bg-primary text-on-primary py-3 px-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:opacity-90 transition-opacity">
+                Preview Portfolio
+            </button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 rounded text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-md">Log Out</span>
+</a>
+</div>
+<!-- Profile Info -->
+<div class="flex items-center gap-3 px-2 pt-2">
+<img alt="Nanang Eka Cahya Pernata" class="w-8 h-8 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDb1z9Z7-1SKiCxeYhS1rc-a9GiJzzDCRclRfmoFtc5A72uGJg5sVTbq1C7Z3BIZ4VH_-nDmZLmD1JdS6mjGOcPf3PRYGSODY8diWyvTk-Ze2wcUh8eD3B_3gJEAAOo6-OGGCGthXi8rVTdMDv5evvKf83w64tHzs20h-euv_Sa3sON_1tDEhXODD2LVi6S4QMfbct85OHg_k_mXX1XXQnTHIgH8KQIsMvC_amohByYmlHyw945A5QtbC2L2vY45YDx0dpe3thwNLeR"/>
+<div class="overflow-hidden">
+<p class="font-label-caps text-[10px] truncate leading-tight">LOGGED IN AS</p>
+<p class="font-body-md text-sm font-bold truncate">Nanang Eka Cahya</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopAppBar Shell -->
+<header class="sticky top-0 right-0 z-40 w-full ml-[280px] max-w-[calc(100%-280px)] bg-surface border-b border-outline-variant flex items-center justify-between px-margin-page py-stack-md">
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-sm w-64 focus:ring-1 focus:ring-secondary" placeholder="Search components..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="flex items-center gap-2">
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container rounded-full transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container rounded-full transition-colors">help_outline</button>
+</div>
+<div class="h-8 w-px bg-outline-variant mx-2"></div>
+<button class="text-on-surface-variant font-label-caps text-label-caps hover:text-primary transition-colors">Discard</button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded font-label-caps text-label-caps shadow-sm hover:opacity-90 transition-all active:scale-95">Save Changes</button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="ml-[280px] p-margin-page min-h-screen bg-background">
+<!-- Status & Welcome -->
+<div class="mb-section-gap flex justify-between items-end">
+<div>
+<p class="font-label-caps text-label-caps text-secondary mb-2">DASHBOARD OVERVIEW</p>
+<h2 class="font-display-xl text-display-xl">Welcome back, Nanang.</h2>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-4 flex items-center gap-4">
+<div class="w-3 h-3 bg-olive-500 rounded-full animate-pulse bg-green-600"></div>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">LAST PUBLISHED</p>
+<p class="font-data-ui text-data-ui font-semibold">Today, 10:24 AM</p>
+</div>
+</div>
+</div>
+<!-- Bento Grid Content -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Quick Edit Hero (Large Bento) -->
+<div class="col-span-8 bg-surface-container-lowest border border-outline-variant p-stack-lg group hover:border-primary transition-colors">
+<div class="flex justify-between items-start mb-stack-lg">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">QUICK EDIT: HERO SECTION</h3>
+<span class="material-symbols-outlined text-on-surface-variant opacity-40 group-hover:opacity-100">edit</span>
+</div>
+<div class="space-y-6">
+<div>
+<label class="font-label-caps text-[10px] text-on-surface-variant block mb-2">HEADLINE</label>
+<h4 class="font-headline-lg text-headline-lg border-b border-transparent hover:border-outline-variant pb-2 transition-all outline-none" contenteditable="true">Nanang Eka Cahya Pernata</h4>
+</div>
+<div>
+<label class="font-label-caps text-[10px] text-on-surface-variant block mb-2">SUBTEXT</label>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-2xl border-b border-transparent hover:border-outline-variant pb-2 transition-all outline-none" contenteditable="true">
+                            Backend-focused full-stack engineer building reliable API platforms, microservices, and operational systems for teams that need maintainable architecture.
+                        </p>
+</div>
+<div class="flex gap-4 pt-4">
+<button class="bg-surface-container-high px-4 py-2 rounded font-data-ui text-data-ui hover:bg-primary hover:text-on-primary transition-all">Update Hero</button>
+</div>
+</div>
+</div>
+<!-- Profile Summary (Small Bento) -->
+<div class="col-span-4 bg-primary text-on-primary p-stack-lg flex flex-col justify-between">
+<div>
+<h3 class="font-label-caps text-label-caps opacity-60 mb-stack-lg">CORE SKILL PROFILE</h3>
+<div class="flex flex-col gap-4">
+<div class="p-4 bg-primary-container border border-on-primary-container/20">
+<p class="font-label-caps text-[10px] text-on-primary-container">PRIMARY DEPTH</p>
+<p class="font-body-md font-semibold">Node.js, TypeScript, ExpressJS, NestJS, GraphQL</p>
+</div>
+<div class="p-4 bg-primary-container border border-on-primary-container/20">
+<p class="font-label-caps text-[10px] text-on-primary-container">SYSTEM OWNERSHIP</p>
+<p class="font-body-md font-semibold">Microservices, API integration, Role-based workflows</p>
+</div>
+</div>
+</div>
+<div class="pt-stack-lg">
+<img alt="Nanang Avatar" class="w-16 h-16 grayscale hover:grayscale-0 transition-all duration-500 border-2 border-on-primary p-1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0w5ncJfQ-yVSb_equLSn8d5bJz9CaMGuk3t7je5xxOt7JYcknNdWuZc8aCohcZo_YxAPujs2K_9CkUeCsr8rMklRc3iWAroufYTo6zgFAdZ8ZrJ0OOG_AjLqwbHZ8jqObAqd_FlirXg64M3tRxcxZfCS4h6Vjy6Skz5vftCPxDawOiM_o0z_2PP6m3RPQ5ZCQ7r5A7ctKXsCkUfPoPBAvGF5Sy-hktoQZYIHraPIl6uR1R-DqmmwALFpGcgvrIQErQDaiaIVgCOws"/>
+</div>
+</div>
+<!-- Skills Distribution (Small Bento) -->
+<div class="col-span-4 bg-surface-container-high p-stack-lg border border-outline-variant">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-stack-lg">SKILLS HIERARCHY</h3>
+<div class="space-y-4">
+<div class="space-y-1">
+<div class="flex justify-between font-label-caps text-[10px]">
+<span>BACKEND DEVELOPMENT</span>
+<span>95%</span>
+</div>
+<div class="h-1 bg-surface-container-highest w-full">
+<div class="h-full bg-primary w-[95%]"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between font-label-caps text-[10px]">
+<span>INFRASTRUCTURE / CI/CD</span>
+<span>80%</span>
+</div>
+<div class="h-1 bg-surface-container-highest w-full">
+<div class="h-full bg-primary w-[80%]"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between font-label-caps text-[10px]">
+<span>FRONTEND INTEGRATION</span>
+<span>70%</span>
+</div>
+<div class="h-1 bg-surface-container-highest w-full">
+<div class="h-full bg-primary w-[70%]"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between font-label-caps text-[10px]">
+<span>SYSTEM ARCHITECTURE</span>
+<span>85%</span>
+</div>
+<div class="h-1 bg-surface-container-highest w-full">
+<div class="h-full bg-primary w-[85%]"></div>
+</div>
+</div>
+</div>
+<button class="mt-stack-lg w-full py-2 border border-outline font-label-caps text-[10px] hover:bg-primary hover:text-on-primary transition-colors">EDIT ALL SKILLS</button>
+</div>
+<!-- Recent Experience (Mid Bento) -->
+<div class="col-span-8 bg-surface-container-lowest border border-outline-variant">
+<div class="p-stack-lg border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">RECENT ROLES &amp; PROJECTS</h3>
+<button class="font-label-caps text-[10px] text-secondary hover:underline">VIEW CAREER LOG</button>
+</div>
+<div class="divide-y divide-outline-variant">
+<div class="p-stack-lg flex gap-6 hover:bg-surface-container-low transition-colors">
+<div class="font-data-ui text-data-ui text-on-surface-variant whitespace-nowrap pt-1">2022 – PRES</div>
+<div>
+<h4 class="font-headline-md text-lg font-bold">Technical Leader / Senior Web Engineer</h4>
+<p class="font-body-md text-on-surface-variant mb-3">PT Telkom Indonesia (Persero) Tbk</p>
+<div class="flex gap-2 flex-wrap">
+<span class="bg-surface-container-high px-2 py-1 font-label-caps text-[9px]">NESTJS</span>
+<span class="bg-surface-container-high px-2 py-1 font-label-caps text-[9px]">DOCKER</span>
+<span class="bg-surface-container-high px-2 py-1 font-label-caps text-[9px]">GTLAB CI/CD</span>
+</div>
+</div>
+<button class="ml-auto material-symbols-outlined text-on-surface-variant">open_in_new</button>
+</div>
+<div class="p-stack-lg flex gap-6 hover:bg-surface-container-low transition-colors">
+<div class="font-data-ui text-data-ui text-on-surface-variant whitespace-nowrap pt-1">2024 – PRES</div>
+<div>
+<h4 class="font-headline-md text-lg font-bold">Backend Engineer, Part-time</h4>
+<p class="font-body-md text-on-surface-variant mb-3">Teloskop.id</p>
+<div class="flex gap-2 flex-wrap">
+<span class="bg-surface-container-high px-2 py-1 font-label-caps text-[9px]">POSTGRESQL</span>
+<span class="bg-surface-container-high px-2 py-1 font-label-caps text-[9px]">GRAPHQL</span>
+<span class="bg-surface-container-high px-2 py-1 font-label-caps text-[9px]">REDIS</span>
+</div>
+</div>
+<button class="ml-auto material-symbols-outlined text-on-surface-variant">open_in_new</button>
+</div>
+</div>
+</div>
+<!-- Draft Status Section -->
+<div class="col-span-12 mt-stack-lg">
+<div class="bg-secondary-container/10 border border-secondary-container p-6 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary text-4xl">inventory_2</span>
+<div>
+<h3 class="font-headline-md text-primary">Portfolio Draft in Progress</h3>
+<p class="font-body-md text-on-surface-variant">You have 4 unsaved changes in 'Projects' and 1 new skill added to 'Backend depth'.</p>
+</div>
+</div>
+<div class="flex gap-stack-sm shrink-0">
+<button class="border border-secondary text-secondary px-6 py-2 font-label-caps text-label-caps hover:bg-secondary hover:text-on-secondary transition-colors">PREVIEW DRAFT</button>
+<button class="bg-secondary text-on-secondary px-8 py-2 font-label-caps text-label-caps shadow-md hover:opacity-90 transition-opacity">PUBLISH NOW</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Info -->
+<footer class="mt-section-gap border-t border-outline-variant pt-stack-lg pb-stack-lg flex justify-between">
+<p class="font-label-caps text-[10px] text-on-surface-variant">PORTFOLIO CMS V2.4.0 — BUILT FOR PERFORMANCE</p>
+<div class="flex gap-stack-lg">
+<a class="font-label-caps text-[10px] hover:text-primary transition-colors" href="#">API DOCUMENTATION</a>
+<a class="font-label-caps text-[10px] hover:text-primary transition-colors" href="#">SUPPORT CENTER</a>
+<a class="font-label-caps text-[10px] hover:text-primary transition-colors" href="#">SYSTEM STATUS</a>
+</div>
+</footer>
+</main>
+</body></html>
