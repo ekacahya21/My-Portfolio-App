@@ -3,8 +3,8 @@
 import "../../admin.css";
 
 import { useAuth } from "@/lib/auth-context";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { 
@@ -23,9 +23,19 @@ import { db } from "@/lib/firebase";
 type Tab = "overview" | "hero" | "profile" | "projects" | "experience" | "skills" | "education" | "settings";
 
 export default function AdminDashboard() {
+  return (
+    <Suspense fallback={<div className="flex h-screen items-center justify-center bg-background">Loading...</div>}>
+      <DashboardContent />
+    </Suspense>
+  );
+}
+
+function DashboardContent() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<Tab>("overview");
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<Tab>((searchParams.get("tab") as Tab) || "overview");
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [data, setData] = useState<{
@@ -44,11 +54,26 @@ export default function AdminDashboard() {
     content: null
   });
 
+  // Sync state with URL when tab changes
+  const handleTabChange = (tab: Tab) => {
+    setActiveTab(tab);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", tab);
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
   useEffect(() => {
     if (!loading && !user) {
       router.push("/admin/login");
     }
   }, [user, loading, router]);
+
+  useEffect(() => {
+    const tabFromUrl = searchParams.get("tab") as Tab;
+    if (tabFromUrl && tabFromUrl !== activeTab) {
+      setActiveTab(tabFromUrl);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (user) {
@@ -139,13 +164,13 @@ export default function AdminDashboard() {
 
         {/* Navigation Tabs */}
         <nav className="flex-1 space-y-1">
-          <SidebarLink icon="dashboard" label="Dashboard" active={activeTab === "overview"} onClick={() => setActiveTab("overview")} />
-          <SidebarLink icon="view_quilt" label="Hero Section" active={activeTab === "hero"} onClick={() => setActiveTab("hero")} />
-          <SidebarLink icon="account_circle" label="Profile & Bio" active={activeTab === "profile"} onClick={() => setActiveTab("profile")} />
-          <SidebarLink icon="work_history" label="Projects" active={activeTab === "projects"} onClick={() => setActiveTab("projects")} />
-          <SidebarLink icon="description" label="Experience" active={activeTab === "experience"} onClick={() => setActiveTab("experience")} />
-          <SidebarLink icon="psychology" label="Skills" active={activeTab === "skills"} onClick={() => setActiveTab("skills")} />
-          <SidebarLink icon="school" label="Education" active={activeTab === "education"} onClick={() => setActiveTab("education")} />
+          <SidebarLink icon="dashboard" label="Dashboard" active={activeTab === "overview"} onClick={() => handleTabChange("overview")} />
+          <SidebarLink icon="view_quilt" label="Hero Section" active={activeTab === "hero"} onClick={() => handleTabChange("hero")} />
+          <SidebarLink icon="account_circle" label="Profile & Bio" active={activeTab === "profile"} onClick={() => handleTabChange("profile")} />
+          <SidebarLink icon="work_history" label="Projects" active={activeTab === "projects"} onClick={() => handleTabChange("projects")} />
+          <SidebarLink icon="description" label="Experience" active={activeTab === "experience"} onClick={() => handleTabChange("experience")} />
+          <SidebarLink icon="psychology" label="Skills" active={activeTab === "skills"} onClick={() => handleTabChange("skills")} />
+          <SidebarLink icon="school" label="Education" active={activeTab === "education"} onClick={() => handleTabChange("education")} />
         </nav>
 
         {/* CTA & Footer */}
@@ -154,7 +179,7 @@ export default function AdminDashboard() {
             Preview Portfolio
           </Link>
           <div className="space-y-1">
-            <button onClick={() => setActiveTab("settings")} className={`flex items-center w-full gap-3 px-4 py-2 rounded transition-colors ${activeTab === 'settings' ? 'bg-surface-container-high text-primary' : 'text-on-surface-variant hover:bg-surface-container-high'}`}>
+            <button onClick={() => handleTabChange("settings")} className={`flex items-center w-full gap-3 px-4 py-2 rounded transition-colors ${activeTab === 'settings' ? 'bg-surface-container-high text-primary' : 'text-on-surface-variant hover:bg-surface-container-high'}`}>
               <span className="material-symbols-outlined">settings</span>
               <span className="font-body-md text-sm">Settings</span>
             </button>
@@ -191,7 +216,7 @@ export default function AdminDashboard() {
         </header>
 
         <main className="flex-1 p-12 lg:p-20 overflow-y-auto">
-          {activeTab === "overview" && <OverviewTab data={data} />}
+          {activeTab === "overview" && <OverviewTab data={data} setTab={handleTabChange} />}
           {activeTab === "hero" && <HeroTab content={data.content} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} />}
           {activeTab === "profile" && <ProfileTab content={data.content} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} />}
           {activeTab === "projects" && <ProjectsTab items={data.projects} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} requestConfirm={requestConfirm} />}

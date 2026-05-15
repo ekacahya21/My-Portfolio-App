@@ -146,6 +146,7 @@ export default function Hero({ name, title, copy, metadata, email, linkedin, cvU
                 width={900} 
                 height={900} 
                 priority
+                unoptimized
               />
             </div>
             <div>
