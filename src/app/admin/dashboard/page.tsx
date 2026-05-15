@@ -363,6 +363,10 @@ function OverviewTab({ data, setTab }: any) {
 function HeroTab({ content, refresh, showToast, isSaving, setIsSaving }: any) {
   const [form, setForm] = useState(content || { heroTitle: "", heroCopy: "" });
 
+  useEffect(() => {
+    if (content) setForm(content);
+  }, [content]);
+
   const handleSave = async () => {
     setIsSaving(true);
     try {
@@ -416,6 +420,10 @@ function HeroTab({ content, refresh, showToast, isSaving, setIsSaving }: any) {
 
 function ProfileTab({ content, refresh, showToast, isSaving, setIsSaving }: any) {
   const [form, setForm] = useState(content || { introTitle: "", introCopy: "", email: "", github: "", linkedin: "", instagram: "", avatarUrl: "", profileUrl: "" });
+
+  useEffect(() => {
+    if (content) setForm(content);
+  }, [content]);
 
   const handleSave = async () => {
     setIsSaving(true);
