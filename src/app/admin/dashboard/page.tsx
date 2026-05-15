@@ -27,6 +27,7 @@ export default function AdminDashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>("overview");
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
   const [data, setData] = useState<{
     projects: Project[];
     experience: ExperienceItem[];
@@ -72,8 +73,30 @@ export default function AdminDashboard() {
     setTimeout(() => setToast(null), 3000);
   };
 
+  const [confirmState, setConfirmState] = useState<{
+    show: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    confirmLabel?: string;
+  }>({
+    show: false,
+    title: "",
+    message: "",
+    onConfirm: () => {},
+  });
+
+  const requestConfirm = (title: string, message: string, onConfirm: () => void, confirmLabel = "Confirm") => {
+    setConfirmState({ show: true, title, message, onConfirm, confirmLabel });
+  };
+
   const handleLogout = () => {
-    if (auth) signOut(auth).then(() => router.push("/admin/login"));
+    requestConfirm(
+      "Sign Out?",
+      "Are you sure you want to log out of the admin dashboard?",
+      () => { if (auth) signOut(auth).then(() => router.push("/admin/login")); },
+      "Log Out"
+    );
   };
 
   if (loading || !user) return <div className="flex h-screen items-center justify-center bg-background">Loading...</div>;
@@ -167,20 +190,16 @@ export default function AdminDashboard() {
           </div>
         </header>
 
-        {/* Main Canvas */}
-        <main className="p-10 flex-1 bg-background">
-          <AnimatePresence mode="wait">
-            {activeTab === "overview" && <OverviewTab key="overview" data={data} setTab={setActiveTab} />}
-            {activeTab === "hero" && <HeroTab key="hero" content={data.content} refresh={fetchAllData} showToast={showToast} />}
-            {activeTab === "profile" && <ProfileTab key="profile" content={data.content} refresh={fetchAllData} showToast={showToast} />}
-            {activeTab === "projects" && <ProjectsTab key="projects" items={data.projects} refresh={fetchAllData} showToast={showToast} />}
-            {activeTab === "experience" && <ExperienceTab key="experience" items={data.experience} refresh={fetchAllData} showToast={showToast} />}
-            {activeTab === "skills" && <SkillsTab key="skills" items={data.skills} refresh={fetchAllData} showToast={showToast} />}
-            {activeTab === "education" && <EducationTab key="education" items={data.education} refresh={fetchAllData} showToast={showToast} />}
-            {activeTab === "settings" && <SettingsTab key="settings" content={data.content} refresh={fetchAllData} showToast={showToast} />}
-          </AnimatePresence>
-
-          {/* Footer Info */}
+        <main className="flex-1 p-12 lg:p-20 overflow-y-auto">
+          {activeTab === "overview" && <OverviewTab data={data} />}
+          {activeTab === "hero" && <HeroTab content={data.content} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} />}
+          {activeTab === "profile" && <ProfileTab content={data.content} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} />}
+          {activeTab === "projects" && <ProjectsTab items={data.projects} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} requestConfirm={requestConfirm} />}
+          {activeTab === "experience" && <ExperienceTab items={data.experience} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} requestConfirm={requestConfirm} />}
+          {activeTab === "skills" && <SkillsTab items={data.skills} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} requestConfirm={requestConfirm} />}
+          {activeTab === "education" && <EducationTab items={data.education} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} requestConfirm={requestConfirm} />}
+          {activeTab === "settings" && <SettingsTab content={data.content} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} requestConfirm={requestConfirm} />}
+        
           <footer className="mt-20 border-t border-outline-variant pt-8 pb-8 flex justify-between">
             <p className="font-label-caps text-[10px] text-on-surface-variant">PORTFOLIO CMS V3.0.0 — MODERN EDITORIAL ENGINE</p>
             <div className="flex gap-8">
@@ -189,6 +208,21 @@ export default function AdminDashboard() {
             </div>
           </footer>
         </main>
+
+        <AnimatePresence>
+          {confirmState.show && (
+            <ConfirmationModal 
+              title={confirmState.title}
+              message={confirmState.message}
+              confirmLabel={confirmState.confirmLabel}
+              onConfirm={() => {
+                confirmState.onConfirm();
+                setConfirmState(prev => ({ ...prev, show: false }));
+              }}
+              onClose={() => setConfirmState(prev => ({ ...prev, show: false }))}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
@@ -285,13 +319,20 @@ function OverviewTab({ data, setTab }: any) {
   );
 }
 
-function HeroTab({ content, refresh, showToast }: any) {
+function HeroTab({ content, refresh, showToast, isSaving, setIsSaving }: any) {
   const [form, setForm] = useState(content || { heroTitle: "", heroCopy: "" });
 
   const handleSave = async () => {
-    await saveSiteContent(form);
-    showToast("Hero section updated successfully!");
-    refresh();
+    setIsSaving(true);
+    try {
+      await saveSiteContent(form);
+      showToast("Hero section updated successfully!");
+      refresh();
+    } catch (e) {
+      showToast("Failed to save changes. Check permissions.", "error");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -318,9 +359,13 @@ function HeroTab({ content, refresh, showToast }: any) {
           />
         </div>
         <div className="pt-6">
-          <button onClick={handleSave} className="bg-primary text-on-primary px-10 py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:opacity-90 transition-all flex items-center gap-3">
-            <span className="material-symbols-outlined">save</span>
-            Publish Changes
+          <button 
+            onClick={handleSave} 
+            disabled={isSaving}
+            className="bg-primary text-on-primary px-10 py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:opacity-90 disabled:opacity-50 transition-all flex items-center gap-3"
+          >
+            <span className="material-symbols-outlined">{isSaving ? 'sync' : 'save'}</span>
+            {isSaving ? 'Publishing...' : 'Publish Changes'}
           </button>
         </div>
       </div>
@@ -328,13 +373,20 @@ function HeroTab({ content, refresh, showToast }: any) {
   );
 }
 
-function ProfileTab({ content, refresh, showToast }: any) {
-  const [form, setForm] = useState(content || { introTitle: "", introCopy: "", email: "", github: "", linkedin: "", avatarUrl: "", profileUrl: "" });
+function ProfileTab({ content, refresh, showToast, isSaving, setIsSaving }: any) {
+  const [form, setForm] = useState(content || { introTitle: "", introCopy: "", email: "", github: "", linkedin: "", instagram: "", avatarUrl: "", profileUrl: "" });
 
   const handleSave = async () => {
-    await saveSiteContent(form);
-    showToast("Profile information saved!");
-    refresh();
+    setIsSaving(true);
+    try {
+      await saveSiteContent(form);
+      showToast("Profile information saved!");
+      refresh();
+    } catch (e) {
+      showToast("Failed to save biography.", "error");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -345,10 +397,11 @@ function ProfileTab({ content, refresh, showToast }: any) {
       </div>
       <div className="bg-surface-container-lowest border border-outline-variant p-10 space-y-10 max-w-4xl">
         <div className="grid grid-cols-2 gap-8">
-          <Input label="EMAIL ADDRESS" value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
-          <Input label="AVATAR URL" value={form.avatarUrl} onChange={(v) => setForm({ ...form, avatarUrl: v })} />
-          <Input label="GITHUB URL" value={form.github} onChange={(v) => setForm({ ...form, github: v })} />
-          <Input label="LINKEDIN URL" value={form.linkedin} onChange={(v) => setForm({ ...form, linkedin: v })} />
+          <Input label="EMAIL ADDRESS" value={form.email} onChange={(v: string) => setForm({ ...form, email: v })} />
+          <Input label="AVATAR URL" value={form.avatarUrl} onChange={(v: string) => setForm({ ...form, avatarUrl: v })} />
+          <Input label="GITHUB URL" value={form.github} onChange={(v: string) => setForm({ ...form, github: v })} />
+          <Input label="LINKEDIN URL" value={form.linkedin} onChange={(v: string) => setForm({ ...form, linkedin: v })} />
+          <Input label="INSTAGRAM URL" value={form.instagram} onChange={(v: string) => setForm({ ...form, instagram: v })} />
         </div>
         <div className="space-y-4">
           <label className="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest">Intro Headline</label>
@@ -367,9 +420,13 @@ function ProfileTab({ content, refresh, showToast }: any) {
           />
         </div>
         <div className="pt-6">
-          <button onClick={handleSave} className="bg-primary text-on-primary px-10 py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:opacity-90 transition-all flex items-center gap-3">
-            <span className="material-symbols-outlined">save</span>
-            Save Biography
+          <button 
+            onClick={handleSave} 
+            disabled={isSaving}
+            className="bg-primary text-on-primary px-10 py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:opacity-90 disabled:opacity-50 transition-all flex items-center gap-3"
+          >
+            <span className="material-symbols-outlined">{isSaving ? 'sync' : 'save'}</span>
+            {isSaving ? 'Saving...' : 'Save Biography'}
           </button>
         </div>
       </div>
@@ -377,43 +434,67 @@ function ProfileTab({ content, refresh, showToast }: any) {
   );
 }
 
-async function deleteItem(collectionName: string, id: string, refresh: () => void, showToast: (m: string) => void) {
-  if (confirm("Are you sure you want to delete this item?")) {
-    await deleteDoc(doc(db, collectionName, id));
-    showToast("Item deleted successfully.");
-    refresh();
-  }
+async function deleteItem(collectionName: string, id: string, refresh: () => void, showToast: (m: string) => void, requestConfirm: any) {
+  requestConfirm(
+    "Delete Item?",
+    "Are you sure you want to delete this item? This action cannot be undone.",
+    async () => {
+      await deleteDoc(doc(db, collectionName, id));
+      showToast("Item deleted successfully.");
+      refresh();
+    },
+    "Delete"
+  );
 }
 
-function ProjectsTab({ items, refresh, showToast }: any) {
+function ProjectsTab({ items, refresh, showToast, isSaving, setIsSaving, requestConfirm }: any) {
   const [editingProject, setEditingProject] = useState<any>(null);
+
+  const handleSaveProject = async () => {
+    setIsSaving(true);
+    try {
+      await saveProject(editingProject);
+      showToast("Project saved!");
+      setEditingProject(null);
+      refresh();
+    } catch (e) {
+      showToast("Failed to save project", "error");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <div className="mb-12 flex justify-between items-end">
+      <div className="flex justify-between items-end mb-12">
         <div>
-          <p className="font-label-caps text-secondary mb-2">CONTENT LIBRARY</p>
+          <p className="font-label-caps text-secondary mb-2">PORTFOLIO</p>
           <h2 className="font-display-xl text-5xl">Projects</h2>
         </div>
         <button 
-          onClick={() => setEditingProject({ id: Date.now().toString(), title: "", company: "", period: "", description: "", result: "", technicalDepth: "", scaleImpact: "", order: items.length })}
-          className="bg-primary text-on-primary px-6 py-3 rounded font-label-caps text-[10px] tracking-widest flex items-center gap-2"
+          onClick={() => setEditingProject({ id: Date.now().toString(), title: '', company: '', period: '', result: '', description: '', technicalDepth: '', scaleImpact: '', order: items.length })}
+          className="bg-primary text-on-primary px-8 py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:opacity-90 transition-opacity flex items-center gap-2 shadow-lg"
         >
-          <span className="material-symbols-outlined text-sm">add</span> ADD NEW PROJECT
+          <span className="material-symbols-outlined">add</span>
+          Add Project
         </button>
       </div>
 
-      <div className="grid gap-4">
-        {items.map((project: any) => (
-          <div key={project.id} className="bg-surface-container-lowest border border-outline-variant p-6 flex justify-between items-center group hover:border-primary transition-colors">
+      <div className="grid gap-6">
+        {items.sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((project: any) => (
+          <div key={project.id} className="bg-surface-container-lowest border border-outline-variant p-8 flex justify-between items-start group hover:border-primary transition-colors">
             <div>
-              <p className="font-label-caps text-[9px] text-secondary tracking-widest uppercase mb-1">{project.period}</p>
-              <h3 className="font-headline-md text-xl font-bold">{project.title}</h3>
-              <p className="font-body-md text-sm text-on-surface-variant">{project.company}</p>
+              <p className="font-label-caps text-[10px] text-secondary mb-2">{project.company} — {project.period}</p>
+              <h3 className="font-headline-md text-xl mb-4 group-hover:text-primary transition-colors">{project.title}</h3>
+              <p className="font-body-md text-sm text-on-surface-variant max-w-2xl line-clamp-2">{project.result}</p>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => setEditingProject(project)} className="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container rounded-full text-lg">edit</button>
-              <button onClick={() => deleteItem("projects", project.id, refresh, showToast)} className="material-symbols-outlined text-error p-2 hover:bg-error-container rounded-full text-lg">delete</button>
+              <button onClick={() => setEditingProject(project)} className="p-3 hover:bg-surface-container-high rounded-full transition-colors text-on-surface-variant hover:text-primary">
+                <span className="material-symbols-outlined">edit</span>
+              </button>
+              <button onClick={() => deleteItem('projects', project.id, refresh, showToast, requestConfirm)} className="p-3 hover:bg-error-container rounded-full transition-colors text-on-surface-variant hover:text-error">
+                <span className="material-symbols-outlined">delete</span>
+              </button>
             </div>
           </div>
         ))}
@@ -434,9 +515,19 @@ function ProjectsTab({ items, refresh, showToast }: any) {
                 <Input label="RESULT HIGHLIGHT" value={editingProject.result} onChange={(v: string) => setEditingProject({...editingProject, result: v})} />
               </div>
               <Textarea label="DETAILED DESCRIPTION" value={editingProject.description} onChange={(v: string) => setEditingProject({...editingProject, description: v})} />
+              <div className="grid grid-cols-2 gap-8">
+                <Input label="TECHNICAL DEPTH" value={editingProject.technicalDepth} onChange={(v: string) => setEditingProject({...editingProject, technicalDepth: v})} />
+                <Input label="SCALE & IMPACT" value={editingProject.scaleImpact} onChange={(v: string) => setEditingProject({...editingProject, scaleImpact: v})} />
+              </div>
               <div className="flex gap-4 pt-6">
-                <button onClick={async () => { await saveProject(editingProject); showToast("Project saved!"); setEditingProject(null); refresh(); }} className="flex-1 bg-primary text-on-primary py-4 rounded font-label-caps text-[11px] uppercase tracking-widest">Save Changes</button>
-                <button onClick={() => setEditingProject(null)} className="flex-1 border border-outline-variant py-4 rounded font-label-caps text-[11px] uppercase tracking-widest">Cancel</button>
+                <button 
+                  onClick={handleSaveProject} 
+                  disabled={isSaving}
+                  className="flex-1 bg-primary text-on-primary py-4 rounded font-label-caps text-[11px] uppercase tracking-widest disabled:opacity-50 shadow-lg hover:opacity-90 transition-opacity"
+                >
+                  {isSaving ? 'Saving...' : 'Save Changes'}
+                </button>
+                <button onClick={() => setEditingProject(null)} className="flex-1 border border-outline-variant py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:bg-surface-container-high transition-colors">Cancel</button>
               </div>
             </div>
           </Modal>
@@ -446,35 +537,53 @@ function ProjectsTab({ items, refresh, showToast }: any) {
   );
 }
 
-function ExperienceTab({ items, refresh, showToast }: any) {
+function ExperienceTab({ items, refresh, showToast, isSaving, setIsSaving, requestConfirm }: any) {
   const [editingItem, setEditingItem] = useState<any>(null);
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      await saveExperience(editingItem);
+      showToast("Experience saved!");
+      setEditingItem(null);
+      refresh();
+    } catch (e) {
+      showToast("Failed to save experience", "error");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <div className="mb-12 flex justify-between items-end">
+      <div className="flex justify-between items-end mb-12">
         <div>
-          <p className="font-label-caps text-secondary mb-2">CAREER LOG</p>
+          <p className="font-label-caps text-secondary mb-2">RESUME</p>
           <h2 className="font-display-xl text-5xl">Experience</h2>
         </div>
         <button 
-          onClick={() => setEditingItem({ id: Date.now().toString(), title: "", company: "", period: "", highlights: [], order: items.length })}
-          className="bg-primary text-on-primary px-6 py-3 rounded font-label-caps text-[10px] tracking-widest flex items-center gap-2"
+          onClick={() => setEditingItem({ id: Date.now().toString(), title: '', company: '', period: '', highlights: [''], order: items.length })}
+          className="bg-primary text-on-primary px-8 py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:opacity-90 transition-opacity flex items-center gap-2 shadow-lg"
         >
-          <span className="material-symbols-outlined text-sm">add</span> ADD NEW ROLE
+          <span className="material-symbols-outlined">add</span>
+          Add Experience
         </button>
       </div>
 
-      <div className="grid gap-4">
-        {items.map((item: any) => (
-          <div key={item.id} className="bg-surface-container-lowest border border-outline-variant p-6 flex justify-between items-center group hover:border-primary transition-colors">
+      <div className="grid gap-6">
+        {items.sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((item: any) => (
+          <div key={item.id} className="bg-surface-container-lowest border border-outline-variant p-8 flex justify-between items-start group hover:border-primary transition-colors">
             <div>
-              <p className="font-label-caps text-[9px] text-secondary tracking-widest uppercase mb-1">{item.period}</p>
-              <h3 className="font-headline-md text-xl font-bold">{item.title}</h3>
-              <p className="font-body-md text-sm text-on-surface-variant">{item.company}</p>
+              <p className="font-label-caps text-[10px] text-secondary mb-2">{item.company} — {item.period}</p>
+              <h3 className="font-headline-md text-xl mb-2 group-hover:text-primary transition-colors">{item.title}</h3>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => setEditingItem(item)} className="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container rounded-full text-lg">edit</button>
-              <button onClick={() => deleteItem("experience", item.id, refresh, showToast)} className="material-symbols-outlined text-error p-2 hover:bg-error-container rounded-full text-lg">delete</button>
+              <button onClick={() => setEditingItem(item)} className="p-3 hover:bg-surface-container-high rounded-full transition-colors text-on-surface-variant hover:text-primary">
+                <span className="material-symbols-outlined">edit</span>
+              </button>
+              <button onClick={() => deleteItem('experience', item.id, refresh, showToast, requestConfirm)} className="p-3 hover:bg-error-container rounded-full transition-colors text-on-surface-variant hover:text-error">
+                <span className="material-symbols-outlined">delete</span>
+              </button>
             </div>
           </div>
         ))}
@@ -484,15 +593,49 @@ function ExperienceTab({ items, refresh, showToast }: any) {
         {editingItem && (
           <Modal onClose={() => setEditingItem(null)}>
             <div className="p-10 space-y-8">
-              <h3 className="font-display-xl text-3xl">Edit Career History</h3>
+              <div className="flex justify-between items-start">
+                <h3 className="font-display-xl text-3xl">Edit Career History</h3>
+                <button onClick={() => setEditingItem(null)} className="material-symbols-outlined">close</button>
+              </div>
               <div className="grid grid-cols-2 gap-8">
                 <Input label="ROLE TITLE" value={editingItem.title} onChange={(v: string) => setEditingItem({...editingItem, title: v})} />
                 <Input label="COMPANY" value={editingItem.company} onChange={(v: string) => setEditingItem({...editingItem, company: v})} />
               </div>
               <Input label="PERIOD" value={editingItem.period} onChange={(v: string) => setEditingItem({...editingItem, period: v})} />
+              
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <label className="font-label-caps text-[9px] tracking-widest text-on-surface-variant uppercase">Key Highlights</label>
+                  <button onClick={() => setEditingItem({...editingItem, highlights: [...editingItem.highlights, '']})} className="text-primary font-label-caps text-[9px] uppercase tracking-widest">+ Add Bullet</button>
+                </div>
+                {editingItem.highlights.map((h: string, i: number) => (
+                  <div key={i} className="flex gap-4">
+                    <input 
+                      className="flex-1 bg-surface-container-low border border-outline-variant p-4 font-body-md text-sm focus:outline-none focus:border-primary transition-colors"
+                      value={h}
+                      onChange={(e) => {
+                        const newH = [...editingItem.highlights];
+                        newH[i] = e.target.value;
+                        setEditingItem({...editingItem, highlights: newH});
+                      }}
+                    />
+                    <button onClick={() => {
+                      const newH = editingItem.highlights.filter((_: any, idx: number) => idx !== i);
+                      setEditingItem({...editingItem, highlights: newH});
+                    }} className="material-symbols-outlined text-on-surface-variant hover:text-error transition-colors">delete</button>
+                  </div>
+                ))}
+              </div>
+
               <div className="flex gap-4 pt-6">
-                <button onClick={async () => { await saveExperience(editingItem); showToast("Experience saved!"); setEditingItem(null); refresh(); }} className="flex-1 bg-primary text-on-primary py-4 rounded font-label-caps text-[11px] uppercase tracking-widest">Save Role</button>
-                <button onClick={() => setEditingItem(null)} className="flex-1 border border-outline-variant py-4 rounded font-label-caps text-[11px] uppercase tracking-widest">Cancel</button>
+                <button 
+                  onClick={handleSave} 
+                  disabled={isSaving}
+                  className="flex-1 bg-primary text-on-primary py-4 rounded font-label-caps text-[11px] uppercase tracking-widest disabled:opacity-50 shadow-lg hover:opacity-90 transition-opacity"
+                >
+                  {isSaving ? 'Saving...' : 'Save Role'}
+                </button>
+                <button onClick={() => setEditingItem(null)} className="flex-1 border border-outline-variant py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:bg-surface-container-high transition-colors">Cancel</button>
               </div>
             </div>
           </Modal>
@@ -502,8 +645,22 @@ function ExperienceTab({ items, refresh, showToast }: any) {
   );
 }
 
-function SkillsTab({ items, refresh, showToast }: any) {
+function SkillsTab({ items, refresh, showToast, isSaving, setIsSaving, requestConfirm }: any) {
   const [editingItem, setEditingItem] = useState<any>(null);
+
+  const handleSaveSkill = async () => {
+    setIsSaving(true);
+    try {
+      await saveSkill(editingItem);
+      showToast("Skills updated!");
+      setEditingItem(null);
+      refresh();
+    } catch (e) {
+      showToast("Failed to save skills.", "error");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -529,7 +686,7 @@ function SkillsTab({ items, refresh, showToast }: any) {
             </div>
             <div className="flex gap-2">
               <button onClick={() => setEditingItem(item)} className="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container rounded-full text-lg">edit</button>
-              <button onClick={() => deleteItem("skills", item.id, refresh, showToast)} className="material-symbols-outlined text-error p-2 hover:bg-error-container rounded-full text-lg">delete</button>
+              <button onClick={() => deleteItem("skills", item.id, refresh, showToast, requestConfirm)} className="material-symbols-outlined text-error p-2 hover:bg-error-container rounded-full text-lg">delete</button>
             </div>
           </div>
         ))}
@@ -543,8 +700,14 @@ function SkillsTab({ items, refresh, showToast }: any) {
               <Input label="GROUP TITLE" value={editingItem.title} onChange={(v: string) => setEditingItem({...editingItem, title: v})} />
               <Textarea label="SKILLS (COMMA SEPARATED)" value={editingItem.skills} onChange={(v: string) => setEditingItem({...editingItem, skills: v})} />
               <div className="flex gap-4 pt-6">
-                <button onClick={async () => { await saveSkill(editingItem); showToast("Skills updated!"); setEditingItem(null); refresh(); }} className="flex-1 bg-primary text-on-primary py-4 rounded font-label-caps text-[11px] uppercase tracking-widest">Save Group</button>
-                <button onClick={() => setEditingItem(null)} className="flex-1 border border-outline-variant py-4 rounded font-label-caps text-[11px] uppercase tracking-widest">Cancel</button>
+                <button 
+                  onClick={handleSaveSkill} 
+                  disabled={isSaving}
+                  className="flex-1 bg-primary text-on-primary py-4 rounded font-label-caps text-[11px] uppercase tracking-widest disabled:opacity-50 shadow-lg hover:opacity-90 transition-opacity"
+                >
+                  {isSaving ? 'Saving...' : 'Save Group'}
+                </button>
+                <button onClick={() => setEditingItem(null)} className="flex-1 border border-outline-variant py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:bg-surface-container-high transition-colors">Cancel</button>
               </div>
             </div>
           </Modal>
@@ -554,35 +717,53 @@ function SkillsTab({ items, refresh, showToast }: any) {
   );
 }
 
-function EducationTab({ items, refresh, showToast }: any) {
+function EducationTab({ items, refresh, showToast, isSaving, setIsSaving, requestConfirm }: any) {
   const [editingItem, setEditingItem] = useState<any>(null);
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      await saveEducation(editingItem);
+      showToast("Education saved!");
+      setEditingItem(null);
+      refresh();
+    } catch (e) {
+      showToast("Failed to save education", "error");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <div className="mb-12 flex justify-between items-end">
+      <div className="flex justify-between items-end mb-12">
         <div>
-          <p className="font-label-caps text-secondary mb-2">ACADEMIC RECORD</p>
+          <p className="font-label-caps text-secondary mb-2">ACADEMIC</p>
           <h2 className="font-display-xl text-5xl">Education</h2>
         </div>
         <button 
-          onClick={() => setEditingItem({ id: Date.now().toString(), degree: "", institution: "", period: "", order: items.length })}
-          className="bg-primary text-on-primary px-6 py-3 rounded font-label-caps text-[10px] tracking-widest flex items-center gap-2"
+          onClick={() => setEditingItem({ id: Date.now().toString(), degree: '', institution: '', period: '', order: items.length })}
+          className="bg-primary text-on-primary px-8 py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:opacity-90 transition-opacity flex items-center gap-2 shadow-lg"
         >
-          <span className="material-symbols-outlined text-sm">add</span> ADD EDUCATION
+          <span className="material-symbols-outlined">add</span>
+          Add Education
         </button>
       </div>
 
-      <div className="grid gap-4">
-        {items.map((item: any) => (
-          <div key={item.id} className="bg-surface-container-lowest border border-outline-variant p-6 flex justify-between items-center group hover:border-primary transition-colors">
+      <div className="grid gap-6">
+        {items.sort((a: any, b: any) => (a.order || 0) - (b.order || 0)).map((item: any) => (
+          <div key={item.id} className="bg-surface-container-lowest border border-outline-variant p-8 flex justify-between items-start group hover:border-primary transition-colors">
             <div>
-              <p className="font-label-caps text-[9px] text-secondary tracking-widest uppercase mb-1">{item.period}</p>
-              <h3 className="font-headline-md text-xl font-bold">{item.degree}</h3>
-              <p className="font-body-md text-sm text-on-surface-variant">{item.institution}</p>
+              <p className="font-label-caps text-[10px] text-secondary mb-2">{item.institution} — {item.period}</p>
+              <h3 className="font-headline-md text-xl mb-2 group-hover:text-primary transition-colors">{item.degree}</h3>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => setEditingItem(item)} className="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container rounded-full text-lg">edit</button>
-              <button onClick={() => deleteItem("education", item.id, refresh, showToast)} className="material-symbols-outlined text-error p-2 hover:bg-error-container rounded-full text-lg">delete</button>
+              <button onClick={() => setEditingItem(item)} className="p-3 hover:bg-surface-container-high rounded-full transition-colors text-on-surface-variant hover:text-primary">
+                <span className="material-symbols-outlined">edit</span>
+              </button>
+              <button onClick={() => deleteItem('education', item.id, refresh, showToast, requestConfirm)} className="p-3 hover:bg-error-container rounded-full transition-colors text-on-surface-variant hover:text-error">
+                <span className="material-symbols-outlined">delete</span>
+              </button>
             </div>
           </div>
         ))}
@@ -592,15 +773,24 @@ function EducationTab({ items, refresh, showToast }: any) {
         {editingItem && (
           <Modal onClose={() => setEditingItem(null)}>
             <div className="p-10 space-y-8">
-              <h3 className="font-display-xl text-3xl">Edit Education</h3>
+              <div className="flex justify-between items-start">
+                <h3 className="font-display-xl text-3xl">Edit Education</h3>
+                <button onClick={() => setEditingItem(null)} className="material-symbols-outlined">close</button>
+              </div>
               <div className="grid grid-cols-2 gap-8">
                 <Input label="DEGREE / CERTIFICATION" value={editingItem.degree} onChange={(v: string) => setEditingItem({...editingItem, degree: v})} />
                 <Input label="INSTITUTION" value={editingItem.institution} onChange={(v: string) => setEditingItem({...editingItem, institution: v})} />
               </div>
               <Input label="PERIOD" value={editingItem.period} onChange={(v: string) => setEditingItem({...editingItem, period: v})} />
               <div className="flex gap-4 pt-6">
-                <button onClick={async () => { await saveEducation(editingItem); showToast("Education saved!"); setEditingItem(null); refresh(); }} className="flex-1 bg-primary text-on-primary py-4 rounded font-label-caps text-[11px] uppercase tracking-widest">Save Education</button>
-                <button onClick={() => setEditingItem(null)} className="flex-1 border border-outline-variant py-4 rounded font-label-caps text-[11px] uppercase tracking-widest">Cancel</button>
+                <button 
+                  onClick={handleSave} 
+                  disabled={isSaving}
+                  className="flex-1 bg-primary text-on-primary py-4 rounded font-label-caps text-[11px] uppercase tracking-widest disabled:opacity-50 shadow-lg hover:opacity-90 transition-opacity"
+                >
+                  {isSaving ? 'Saving...' : 'Save Education'}
+                </button>
+                <button onClick={() => setEditingItem(null)} className="flex-1 border border-outline-variant py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:bg-surface-container-high transition-colors">Cancel</button>
               </div>
             </div>
           </Modal>
@@ -610,19 +800,201 @@ function EducationTab({ items, refresh, showToast }: any) {
   );
 }
 
-function SettingsTab({ content, refresh, showToast }: any) {
+function SettingsTab({ content, refresh, showToast, isSaving, setIsSaving, requestConfirm }: any) {
+  const handleSyncHiringSignals = async () => {
+    setIsSaving(true);
+    try {
+      // 1. Hero & Profile Content
+      const newContent: SiteContent = {
+        name: "Nanang Eka Cahya Pernata",
+        heroTitle: "Senior Backend-Focused Full-Stack Engineer",
+        heroCopy: "I design reliable API platforms, microservices, and operational systems using Node.js, TypeScript, NestJS, PostgreSQL, Redis, Docker, and CI/CD practices.",
+        heroMetadata: "Jakarta, Indonesia · Senior Backend Engineer · Senior Full-Stack Engineer · Technical Lead",
+        introTitle: "Engineering leader focused on scale, ownership, and measurable impact.",
+        introCopy: "Proven track record of leading technical delivery for national-scale platforms at Telkom Indonesia. I specialize in designing scalable backend architectures, optimizing API performance, and standardizing CI/CD discipline to ensure production readiness across complex environments.",
+        email: "nanangcahya21@gmail.com",
+        github: "https://github.com/nanangcahya",
+        linkedin: "https://www.linkedin.com/in/nanangcahya/",
+        instagram: "https://www.instagram.com/nanang_cahya/",
+        profileUrl: "/nanang-eka-cahya-pernata-cv.pdf"
+      };
+      await saveSiteContent(newContent);
+
+      // 2. Experience Highlights (using saveExperience)
+      // Grouping: top 3 are featured, others are foundations
+      const experiences: ExperienceItem[] = [
+        {
+          id: "exp1",
+          period: "2022 – Present",
+          title: "Senior Backend Engineer",
+          company: "PT Telkom Indonesia",
+          highlights: [
+            "Led backend development for national operational workflow platforms (OSS) using Node.js, NestJS, PostgreSQL, Redis, and GitLab CI/CD.",
+            "Designed API contracts, data models, service boundaries, and release workflows for submission, review, and integration systems.",
+            "Improved delivery consistency through code reviews, documentation, standardizing CI/CD pipelines, and mentoring junior engineers.",
+            "Collaborated with cross-functional stakeholders to translate complex operational requirements into production-ready systems."
+          ],
+          order: 0
+        },
+        {
+          id: "exp2",
+          period: "2020 – 2022",
+          title: "Backend Engineer",
+          company: "PT Telkom Indonesia",
+          highlights: [
+            "Maintained and optimized high-traffic mobile APIs for national telecom products, ensuring production reliability and performance.",
+            "Implemented real-time data ingestion and monitoring systems using Elasticsearch and Node.js for large-volume media record processing.",
+            "Automated deployment workflows using Docker and Nginx, reducing manual release risks across multiple environments."
+          ],
+          order: 1
+        },
+        {
+          id: "exp3",
+          period: "2019 – 2020",
+          title: "Web Engineer",
+          company: "Various Platforms (Hungry/Other, G-Meds)",
+          highlights: [
+            "Delivered core backend features for pharmaceutical and document management systems within distributed international teams.",
+            "Developed responsive administrative dashboards and integrated secure APIs to improve operational visibility for clinic partners."
+          ],
+          order: 2
+        },
+        {
+          id: "exp4",
+          period: "2018 – 2019",
+          title: "Full-Stack Web Developer",
+          company: "Internal Dashboard Tools",
+          highlights: ["Earlier web engineering roles across backend, frontend, CodeIgniter, Laravel, MySQL, and production support."],
+          order: 3
+        }
+      ];
+      for (const exp of experiences) await saveExperience(exp);
+
+      // 3. Projects (using saveProject) - Ensure UNIQUE
+      const projects: Project[] = [
+        {
+          id: "proj1",
+          company: "PT Telkom Indonesia",
+          period: "2022 – Present",
+          title: "Online Single Submission (OSS)",
+          result: "Led backend delivery for a national licensing workflow with review visibility, role-based approvals, and CI/CD release discipline.",
+          description: "Designed API contracts, service boundaries, PostgreSQL data models, Redis-backed workflows, and deployment pipelines for operational stakeholders.",
+          technicalDepth: "Node.js, NestJS, PostgreSQL, Redis, GitLab CI/CD, Microservices",
+          scaleImpact: "Impact: Improved review traceability, reduced manual coordination, and established production release consistency for a national-scale platform.",
+          status: "Featured Case Study",
+          order: 0
+        },
+        {
+          id: "proj2",
+          company: "PT Telkom Indonesia",
+          period: "2021 – 2022",
+          title: "MyTelkomsel Mobile App APIs",
+          result: "Maintained and improved production mobile APIs for a national telecom product with millions of active users.",
+          description: "Optimized API response times and improved error handling for high-volume mobile traffic during a major service transition.",
+          technicalDepth: "Node.js, Express.js, MySQL, Redis, Nginx, API Optimization",
+          scaleImpact: "Impact: Improved API maintainability, deployment consistency, and migration readiness for high-pressure mobile service teams.",
+          status: "Case study available",
+          order: 1
+        },
+        {
+          id: "proj3",
+          company: "PT Telkom Indonesia",
+          period: "2020 – 2021",
+          title: "Media Monitoring System",
+          result: "Delivered a monitoring backend and dashboard for operational media review, handling large-volume data workflows.",
+          description: "Built the ingestion pipeline and administrative dashboard to monitor media sentiment and processing status in real-time.",
+          technicalDepth: "Node.js, Vue.js, PostgreSQL, Elasticsearch, Real-time Ingestion",
+          scaleImpact: "Impact: Improved visibility across monitoring workflows and reduced dependency on manual report checking for enterprise teams.",
+          status: "Case study available",
+          order: 2
+        },
+        {
+          id: "proj4",
+          company: "Freelance / Early Career",
+          period: "2018 – 2019",
+          title: "G-Meds Health Platform",
+          result: "Developed core backend features for pharmaceutical procurement and distribution systems with distributed international teams.",
+          description: "Implemented inventory management, order processing, and supplier integration APIs to digitize clinical supply chains.",
+          technicalDepth: "Node.js, Express, MySQL, REST APIs, Documentation",
+          scaleImpact: "Impact: Digitized manual pharmaceutical workflows, improving order accuracy and inventory visibility for clinic partners.",
+          status: "Archive case study",
+          order: 3
+        }
+      ];
+      for (const proj of projects) await saveProject(proj);
+
+      showToast("Database synchronized with refined signals!");
+      refresh();
+    } catch (e) {
+      console.error(e);
+      showToast("Sync failed. Check database permissions.", "error");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <div className="mb-12">
         <p className="font-label-caps text-secondary mb-2">PREFERENCES</p>
         <h2 className="font-display-xl text-5xl">Settings</h2>
       </div>
-      <div className="bg-surface-container-lowest border border-outline-variant p-10 max-w-2xl">
-        <h3 className="font-headline-md text-xl mb-6">General Configuration</h3>
-        <p className="font-body-md text-on-surface-variant mb-10 text-sm">Update your administrative credentials and site visibility settings here.</p>
-        <button onClick={() => showToast("Password reset link sent to your email.")} className="w-full border border-outline-variant py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all">Change Admin Password</button>
+      
+      <div className="grid gap-8 max-w-4xl">
+        <div className="bg-surface-container-lowest border border-outline-variant p-10">
+          <h3 className="font-headline-md text-xl mb-6">Database Migration Utility</h3>
+          <p className="font-body-md text-on-surface-variant mb-8 text-sm leading-relaxed">
+            Use this tool to permanently synchronize the new high-impact hiring signals (Senior Backend positioning, sharpened results, and evidence density) to your Firestore database.
+          </p>
+          <button 
+            onClick={() => requestConfirm(
+              "Sync Hiring Signals?",
+              "This will synchronize the new high-impact hiring signals (Senior Backend positioning, refined results, and sharpened technical depth) to your Firestore database. Existing data will be merged.",
+              handleSyncHiringSignals,
+              "Confirm Sync"
+            )} 
+            disabled={isSaving}
+            className="w-full bg-secondary text-on-secondary py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:opacity-90 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+          >
+            <span className="material-symbols-outlined">{isSaving ? 'sync' : 'database'}</span>
+            {isSaving ? 'Synchronizing...' : 'Sync All Hiring Signals to Firestore'}
+          </button>
+        </div>
+
+        <div className="bg-surface-container-lowest border border-outline-variant p-10">
+          <h3 className="font-headline-md text-xl mb-6">General Configuration</h3>
+          <p className="font-body-md text-on-surface-variant mb-10 text-sm">Update your administrative credentials and site visibility settings here.</p>
+          <button onClick={() => showToast("Password reset link sent to your email.")} className="w-full border border-outline-variant py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all">Change Admin Password</button>
+        </div>
       </div>
     </motion.div>
+  );
+}
+
+function ConfirmationModal({ title, message, onConfirm, onClose, confirmLabel = "Confirm" }: any) {
+  return (
+    <Modal onClose={onClose}>
+      <div className="p-10 space-y-6">
+        <h3 className="font-display-xl text-3xl">{title}</h3>
+        <p className="font-body-md text-on-surface-variant leading-relaxed">
+          {message}
+        </p>
+        <div className="flex gap-4 pt-4">
+          <button 
+            onClick={onConfirm} 
+            className="flex-1 bg-primary text-on-primary py-4 rounded font-label-caps text-[11px] uppercase tracking-widest shadow-lg hover:opacity-90 transition-opacity"
+          >
+            {confirmLabel}
+          </button>
+          <button 
+            onClick={onClose} 
+            className="flex-1 border border-outline-variant py-4 rounded font-label-caps text-[11px] uppercase tracking-widest hover:bg-surface-container-high transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </Modal>
   );
 }
 

@@ -15,8 +15,10 @@ export default function AdminBar() {
   if (loading || !user) return null;
 
   const handleLogout = async () => {
-    await signOut(auth);
-    router.push("/");
+    if (auth) {
+      await signOut(auth);
+      router.push("/");
+    }
   };
 
   return (

@@ -5,11 +5,16 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 interface HeroProps {
+  name?: string;
   title?: string;
   copy?: string;
+  metadata?: string;
+  email?: string;
+  linkedin?: string;
+  cvUrl?: string;
 }
 
-export default function Hero({ title, copy }: HeroProps) {
+export default function Hero({ name, title, copy, metadata, email, linkedin, cvUrl }: HeroProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -105,21 +110,24 @@ export default function Hero({ title, copy }: HeroProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <p className="eyebrow">Senior Web Engineer - Jakarta, Indonesia</p>
-          <h1>{title || "Nanang Eka Cahya Pernata"}</h1>
-          <p className="hero-copy">
-            {copy || "Backend-focused full-stack engineer building reliable API platforms, microservices, and operational systems for teams that need maintainable architecture and dependable delivery."}
-          </p>
-          <div className="hero-actions" aria-label="Contact actions">
-            <a className="button primary" href="mailto:nanangcahya21@gmail.com">Email me</a>
-            <a className="button secondary" href="/nanang-eka-cahya-pernata-cv.pdf" download>Download CV</a>
-            <a className="button secondary" href="#work">View work</a>
+          <div className="hero-identity">
+            <h1 className="name-heading">{name || "Nanang Eka Cahya Pernata"}</h1>
+            <h2 className="role-heading">{title || "Senior Backend-Focused Full-Stack Engineer"}</h2>
           </div>
-          <div className="availability" aria-label="Available for">
-            <span>Target roles</span>
-            <strong>Senior Backend Engineer</strong>
-            <strong>Senior Full-Stack Engineer</strong>
-            <strong>Technical Lead</strong>
+          
+          <p className="hero-copy">
+            {copy || "I turn complex business workflows into API contracts, data models, service boundaries, and release-ready systems using Node.js, TypeScript, NestJS, and production-grade architecture."}
+          </p>
+
+          <div className="hero-meta-signals">
+             {metadata || "Jakarta, Indonesia · Senior Backend Engineer · Senior Full-Stack Engineer · Technical Lead"}
+          </div>
+
+          <div className="hero-actions" aria-label="Contact actions">
+            <a className="button primary large" href={`mailto:${email || 'nanangcahya21@gmail.com'}`}>Email me</a>
+            {cvUrl && <a className="button secondary large font-bold border-terra/40 text-ink" href={cvUrl} download>Download CV</a>}
+            {linkedin && <a className="button secondary large" href={linkedin} target="_blank" rel="noreferrer">LinkedIn</a>}
+            <a className="button secondary large" href="#work">View projects</a>
           </div>
         </motion.div>
         

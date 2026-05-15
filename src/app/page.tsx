@@ -16,6 +16,8 @@ import {
   getEducation, EducationItem
 } from "@/lib/data-service";
 import { motion } from "framer-motion";
+import { Mail, Download } from "lucide-react";
+import { GithubIcon, LinkedinIcon, InstagramIcon } from "@/components/Icons";
 
 export default function Home() {
   const [data, setData] = useState<{
@@ -61,22 +63,44 @@ export default function Home() {
   }
 
   const defaultContent = {
-    heroTitle: "Nanang Eka Cahya Pernata",
-    heroCopy: "Senior Web Engineer based in Jakarta.",
-    introTitle: "I design and deliver backend systems behind production web products.",
-    introCopy: "I turn complex operational requirements into API contracts, data models, service boundaries, and release-ready systems.",
+    name: "Nanang Eka Cahya Pernata",
+    heroTitle: "Senior Backend-Focused Full-Stack Engineer",
+    heroCopy: "I design reliable API platforms, microservices, and operational systems using Node.js, TypeScript, NestJS, PostgreSQL, Redis, Docker, and CI/CD practices.",
+    heroMetadata: "Jakarta, Indonesia · Senior Backend Engineer · Senior Full-Stack Engineer · Technical Lead",
+    introTitle: "Engineering leader focused on scale, ownership, and measurable impact.",
+    introCopy: "Proven track record of leading technical delivery for national-scale platforms at Telkom Indonesia. I specialize in designing scalable backend architectures, optimizing API performance, and standardizing CI/CD discipline to ensure production readiness across complex environments.",
     email: "nanangcahya21@gmail.com",
     github: "https://github.com/nanangcahya",
-    linkedin: "https://www.linkedin.com/in/nanangcahya/"
+    linkedin: "https://www.linkedin.com/in/nanangcahya/",
+    instagram: "https://www.instagram.com/nanang_cahya/",
+    profileUrl: "/nanang-eka-cahya-pernata-cv.pdf"
   };
 
-  const content = data.content || defaultContent;
+  const content = { 
+    ...defaultContent, 
+    ...data.content,
+    heroTitle: defaultContent.heroTitle,
+    heroCopy: defaultContent.heroCopy,
+    heroMetadata: defaultContent.heroMetadata,
+    introTitle: defaultContent.introTitle,
+    introCopy: defaultContent.introCopy,
+    profileUrl: data.content?.profileUrl || defaultContent.profileUrl,
+    email: data.content?.email || defaultContent.email,
+    github: data.content?.github || defaultContent.github,
+    linkedin: data.content?.linkedin || defaultContent.linkedin,
+    instagram: data.content?.instagram || defaultContent.instagram
+  };
 
   return (
     <main id="top">
       <Hero 
+        name={content.name}
         title={content.heroTitle} 
         copy={content.heroCopy} 
+        metadata={content.heroMetadata}
+        email={content.email}
+        linkedin={content.linkedin}
+        cvUrl={content.profileUrl}
       />
       
       <section className="metrics" aria-label="Professional highlights">
@@ -136,25 +160,25 @@ export default function Home() {
 
       <section id="decisions" className="section decisions">
         <div className="section-heading">
-          <p className="section-kicker">Engineering decisions</p>
-          <h2>Examples of senior-level ownership.</h2>
+          <p className="section-kicker">Senior-level ownership</p>
+          <h2>Engineering decisions that drive quality.</h2>
         </div>
         <div className="decision-grid">
-          {data.decisions.length > 0 ? data.decisions.map(decision => (
-            <article key={decision.id}>
-              <h3>{decision.title}</h3>
-              <p>{decision.description}</p>
-              <strong>Example: {decision.example}</strong>
-            </article>
-          )) : (
-            <>
-              <article>
-                <h3>Split monolithic capabilities into service-oriented APIs</h3>
-                <p>Helped move backend capabilities toward smaller API services where teams could reason about ownership, release risk, and performance independently.</p>
-                <strong>Example: applied in Online Single Submission by separating submission, review, integration, and workflow concerns.</strong>
-              </article>
-            </>
-          )}
+          <article>
+            <h3>Split monolithic capabilities into service-oriented APIs</h3>
+            <p>Moved backend capabilities toward service-oriented APIs where teams can reason about ownership, release risk, and performance independently.</p>
+            <strong>Applied in OSS by separating submission, review, integration, and notification concerns.</strong>
+          </article>
+          <article>
+            <h3>Designed workflow systems around roles and auditability</h3>
+            <p>Modeled reviewer, admin, and operator flows with role-based access, traceable status changes, and clearer review visibility.</p>
+            <strong>Applied in licensing and operational review systems with role-based access and traceable status changes.</strong>
+          </article>
+          <article>
+            <h3>Standardized deployment discipline with CI/CD</h3>
+            <p>Implemented robust GitLab CI/CD pipelines to reduce manual deployment risk and ensure consistent delivery across environments.</p>
+            <strong>Applied across backend services using GitLab CI/CD, Docker, and Nginx to reduce manual release risk.</strong>
+          </article>
         </div>
       </section>
 
@@ -165,23 +189,13 @@ export default function Home() {
       <section className="section education">
         <div>
           <p className="section-kicker">Education</p>
-          {data.education.length > 0 ? data.education.map(item => (
-            <div key={item.id} className="mb-6">
-              <h2>{item.degree}</h2>
-              <p>{item.institution}, {item.period}</p>
-              {item.description && <p className="text-sm opacity-70 mt-2">{item.description}</p>}
-            </div>
-          )) : (
-            <div>
-              <h2>Bachelor of Computer Science</h2>
-              <p>Informatics Engineering, Indonesian Computer University (UNIKOM), 2017</p>
-            </div>
-          )}
+          <h2>Bachelor of Computer Science</h2>
+          <p>Informatics Engineering — Indonesian Computer University (UNIKOM) — 2017</p>
         </div>
         <div>
           <p className="section-kicker">Languages</p>
           <h2>English and Bahasa Indonesia</h2>
-          <p>English professional working proficiency. Bahasa Indonesia native proficiency.</p>
+          <p>English — professional working proficiency. Bahasa Indonesia — native proficiency.</p>
         </div>
       </section>
 
@@ -198,9 +212,34 @@ export default function Home() {
           </div>
         </div>
         <div className="contact-panel">
-          <a href={`mailto:${content.email}`}>{content.email}</a>
-          {content.github && <a href={content.github} target="_blank" rel="noreferrer">GitHub</a>}
-          {content.linkedin && <a href={content.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>}
+          <a href={`mailto:${content.email}`} title="Email" aria-label="Email">
+            <Mail size={28} strokeWidth={1.5} />
+            <span className="text-sm uppercase tracking-widest font-mono ml-6">Email</span>
+          </a>
+          {content.linkedin && (
+            <a href={content.linkedin} target="_blank" rel="noreferrer" title="LinkedIn" aria-label="LinkedIn">
+              <LinkedinIcon size={28} />
+              <span className="text-sm uppercase tracking-widest font-mono ml-6">LinkedIn</span>
+            </a>
+          )}
+          {content.profileUrl && (
+            <a href={content.profileUrl} download title="Download CV" aria-label="Download CV">
+              <Download size={28} />
+              <span className="text-sm uppercase tracking-widest font-mono ml-6">Download CV</span>
+            </a>
+          )}
+          {content.github && (
+            <a href={content.github} target="_blank" rel="noreferrer" title="GitHub" aria-label="GitHub">
+              <GithubIcon size={28} />
+              <span className="text-sm uppercase tracking-widest font-mono ml-6">GitHub</span>
+            </a>
+          )}
+          {content.instagram && (
+            <a href={content.instagram} target="_blank" rel="noreferrer" title="Instagram" aria-label="Instagram">
+              <InstagramIcon size={28} />
+              <span className="text-sm uppercase tracking-widest font-mono ml-6">Instagram</span>
+            </a>
+          )}
         </div>
       </section>
     </main>
