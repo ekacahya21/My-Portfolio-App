@@ -54,6 +54,22 @@ function DashboardContent() {
     content: null
   });
 
+  const defaultContent: SiteContent = {
+    name: "Nanang Eka Cahya Pernata",
+    heroTitle: "Senior Backend-Focused Full-Stack Engineer",
+    heroCopy: "I design reliable API platforms, microservices, and operational systems using Node.js, TypeScript, NestJS, PostgreSQL, Redis, Docker, and CI/CD practices.",
+    heroMetadata: "Jakarta, Indonesia · Senior Backend Engineer · Senior Full-Stack Engineer · Technical Lead",
+    introTitle: "Engineering leader focused on scale, ownership, and measurable impact.",
+    introCopy: "Proven track record of leading technical delivery for national-scale platforms at Telkom Indonesia. I specialize in designing scalable backend architectures, optimizing API performance, and standardizing CI/CD discipline to ensure production readiness across complex environments.",
+    email: "nanangcahya21@gmail.com",
+    github: "https://github.com/nanangcahya",
+    linkedin: "https://www.linkedin.com/in/nanangcahya/",
+    instagram: "https://www.instagram.com/nanang_cahya/",
+    profileUrl: "/nanang-eka-cahya-pernata-cv.pdf"
+  };
+
+  const currentContent = { ...defaultContent, ...data.content };
+
   // Sync state with URL when tab changes
   const handleTabChange = (tab: Tab) => {
     setActiveTab(tab);
@@ -216,14 +232,14 @@ function DashboardContent() {
         </header>
 
         <main className="flex-1 p-12 lg:p-20 overflow-y-auto">
-          {activeTab === "overview" && <OverviewTab data={data} setTab={handleTabChange} />}
-          {activeTab === "hero" && <HeroTab content={data.content} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} />}
-          {activeTab === "profile" && <ProfileTab content={data.content} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} />}
+          {activeTab === "overview" && <OverviewTab data={{ ...data, content: currentContent }} setTab={handleTabChange} />}
+          {activeTab === "hero" && <HeroTab content={currentContent} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} />}
+          {activeTab === "profile" && <ProfileTab content={currentContent} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} />}
           {activeTab === "projects" && <ProjectsTab items={data.projects} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} requestConfirm={requestConfirm} />}
           {activeTab === "experience" && <ExperienceTab items={data.experience} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} requestConfirm={requestConfirm} />}
           {activeTab === "skills" && <SkillsTab items={data.skills} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} requestConfirm={requestConfirm} />}
           {activeTab === "education" && <EducationTab items={data.education} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} requestConfirm={requestConfirm} />}
-          {activeTab === "settings" && <SettingsTab content={data.content} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} requestConfirm={requestConfirm} />}
+          {activeTab === "settings" && <SettingsTab content={currentContent} refresh={fetchAllData} showToast={showToast} isSaving={isSaving} setIsSaving={setIsSaving} requestConfirm={requestConfirm} />}
         
           <footer className="mt-20 border-t border-outline-variant pt-8 pb-8 flex justify-between">
             <p className="font-label-caps text-[10px] text-on-surface-variant">PORTFOLIO CMS V3.0.0 — MODERN EDITORIAL ENGINE</p>
