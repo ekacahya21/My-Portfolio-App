@@ -130,8 +130,10 @@ export async function saveDecision(decision: Decision) {
 
 // Profile/Hero Content
 export interface SiteContent {
+  name?: string;
   heroTitle?: string;
   heroCopy?: string;
+  heroMetadata?: string;
   introTitle?: string;
   introCopy?: string;
   availability?: string[];

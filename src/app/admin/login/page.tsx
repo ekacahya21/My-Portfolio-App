@@ -20,6 +20,7 @@ export default function AdminLogin() {
     setIsLoggingIn(true);
     setError("");
     try {
+      if (!auth) throw new Error("Firebase Auth not initialized");
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/admin/dashboard");
     } catch (err: any) {

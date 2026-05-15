@@ -439,6 +439,7 @@ async function deleteItem(collectionName: string, id: string, refresh: () => voi
     "Delete Item?",
     "Are you sure you want to delete this item? This action cannot be undone.",
     async () => {
+      if (!db) return;
       await deleteDoc(doc(db, collectionName, id));
       showToast("Item deleted successfully.");
       refresh();
