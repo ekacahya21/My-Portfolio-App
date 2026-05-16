@@ -33,7 +33,10 @@ export default function ProjectCard({ project, index, isDesktopOnlyMobile = fals
         <span className="result-label">RESULT</span>
         <p className="result-line-bold">{project.result}</p>
       </div>
-      <p className="project-description-text desktop-only">{project.description}</p>
+      <div 
+        className="project-description-text desktop-only rich-text-content line-clamp-4 mt-6"
+        dangerouslySetInnerHTML={{ __html: project.description }}
+      />
       <dl className="proof-list mt-8 lg:mt-10 pt-8 lg:pt-10">
         <div>
           <dt>Stack</dt>

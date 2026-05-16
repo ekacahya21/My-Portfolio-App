@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+@import "react-quill-new/dist/quill.snow.css";
 
 @import "tailwindcss";
 
@@ -85,4 +86,51 @@
 body {
   @apply bg-background text-on-surface font-body;
   margin: 0;
+}
+
+/* Quill Editor Overrides */
+
+.admin-quill-editor {
+  @apply flex flex-col;
+}
+
+.admin-quill-editor .ql-toolbar {
+  border: none !important;
+  border-bottom: 1px solid var(--color-outline-variant) !important;
+  background-color: var(--color-surface-container) !important;
+  border-top-left-radius: 2px !important;
+  border-top-right-radius: 2px !important;
+}
+
+.admin-quill-editor .ql-container {
+  border: none !important;
+  font-family: var(--font-body) !important;
+  font-size: 0.875rem !important;
+  border-bottom-left-radius: 2px !important;
+  border-bottom-right-radius: 2px !important;
+}
+
+.admin-quill-editor .ql-editor {
+  min-height: 160px !important;
+  padding: 1rem !important;
+  color: var(--color-on-surface) !important;
+  line-height: 1.6 !important;
+}
+
+.admin-quill-editor .ql-stroke {
+  stroke: var(--color-on-surface-variant) !important;
+}
+
+.admin-quill-editor .ql-fill {
+  fill: var(--color-on-surface-variant) !important;
+}
+
+.admin-quill-editor .ql-picker {
+  color: var(--color-on-surface-variant) !important;
+}
+
+.admin-quill-editor .ql-picker-options {
+  background-color: var(--color-surface) !important;
+  border: 1px solid var(--color-outline-variant) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
 }

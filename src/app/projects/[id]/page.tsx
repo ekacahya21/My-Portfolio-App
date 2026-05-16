@@ -80,9 +80,10 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
             transition={{ duration: 0.5 }}
           >
             <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-terra opacity-60 mb-8">The Challenge & Role</h2>
-            <p className="text-xl lg:text-3xl leading-relaxed text-ink/80 font-medium">
-              {project.description}
-            </p>
+            <div 
+              className="text-xl lg:text-3xl leading-relaxed text-ink/80 font-medium rich-text-content max-w-none"
+              dangerouslySetInnerHTML={{ __html: project.description }}
+            />
           </motion.section>
 
           <motion.section

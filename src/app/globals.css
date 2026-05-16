@@ -627,6 +627,68 @@ footer {
 }
 
 /* Material Symbols Fix */
+/* Rich Text Content Styling */
+.rich-text-content {
+  @apply space-y-6;
+}
+
+.rich-text-content p {
+  @apply mb-4 last:mb-0;
+}
+
+.rich-text-content ul {
+  @apply list-disc pl-6 space-y-2 mb-6;
+}
+
+.rich-text-content ol {
+  @apply list-decimal pl-6 space-y-2 mb-6;
+}
+
+.rich-text-content li {
+  @apply pl-2;
+}
+
+.rich-text-content h1 {
+  @apply text-3xl lg:text-5xl mt-12 mb-6 font-bold;
+}
+
+.rich-text-content h2 {
+  @apply text-2xl lg:text-3xl mt-10 mb-5 font-bold;
+}
+
+.rich-text-content blockquote {
+  @apply border-l-4 border-terra pl-6 italic text-ink/60 my-8 py-2 bg-terra/5;
+}
+
+.rich-text-content strong {
+  @apply font-bold text-ink;
+}
+
+.rich-text-content a {
+  @apply text-terra hover:underline transition-all;
+}
+
+/* Card-specific Rich Text Overrides */
+.work-card .rich-text-content {
+  @apply space-y-0;
+}
+
+.work-card .rich-text-content * {
+  @apply text-lg lg:text-xl text-ink/70 leading-relaxed font-normal m-0 p-0 !important;
+}
+
+.work-card .rich-text-content br {
+  @apply hidden;
+}
+
+.work-card .rich-text-content ul, 
+.work-card .rich-text-content ol,
+.work-card .rich-text-content blockquote,
+.work-card .rich-text-content h1,
+.work-card .rich-text-content h2 {
+  @apply hidden;
+}
+
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined';
   font-weight: normal;

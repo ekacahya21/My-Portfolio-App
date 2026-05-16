@@ -19,6 +19,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import RichTextEditor from "@/components/RichTextEditor";
 
 type Tab = "overview" | "hero" | "profile" | "projects" | "experience" | "skills" | "education" | "settings";
 
@@ -564,7 +565,7 @@ function ProjectsTab({ items, refresh, showToast, isSaving, setIsSaving, request
                 <Input label="PERIOD" value={editingProject.period} onChange={(v: string) => setEditingProject({...editingProject, period: v})} />
                 <Input label="RESULT HIGHLIGHT" value={editingProject.result} onChange={(v: string) => setEditingProject({...editingProject, result: v})} />
               </div>
-              <Textarea label="DETAILED DESCRIPTION" value={editingProject.description} onChange={(v: string) => setEditingProject({...editingProject, description: v})} />
+              <RichTextEditor label="DETAILED DESCRIPTION" value={editingProject.description} onChange={(v: string) => setEditingProject({...editingProject, description: v})} />
               <div className="grid grid-cols-2 gap-8">
                 <Input label="TECHNICAL DEPTH" value={editingProject.technicalDepth} onChange={(v: string) => setEditingProject({...editingProject, technicalDepth: v})} />
                 <Input label="SCALE & IMPACT" value={editingProject.scaleImpact} onChange={(v: string) => setEditingProject({...editingProject, scaleImpact: v})} />
