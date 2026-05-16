@@ -1,7 +1,5 @@
 "use client";
 
-import "./globals.css";
-
 import { useEffect, useState } from "react";
 import Hero from "@/components/Hero";
 import Work from "@/components/Work";

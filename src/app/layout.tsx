@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import AdminBar from "@/components/AdminBar";
 import MainLayout from "@/components/MainLayout";
