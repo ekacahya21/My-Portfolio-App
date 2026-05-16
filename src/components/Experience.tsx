@@ -23,8 +23,8 @@ export default function Experience({ items = [] }: ExperienceProps) {
       title: "Senior Backend Engineer",
       company: "PT Telkom Indonesia",
       highlights: [
-        "Led backend development for national operational workflow platforms (OSS) using Node.js, NestJS, PostgreSQL, Redis, and GitLab CI/CD.",
-        "Designed API contracts, data models, service boundaries, and release workflows for submission, review, and integration systems.",
+        "Led backend development for operational workflow systems using Node.js, NestJS, PostgreSQL, Redis, and CI/CD.",
+        "Designed API contracts, service boundaries, data models, and release workflows for production systems.",
         "Improved delivery consistency through code reviews, documentation, standardizing CI/CD pipelines, and mentoring junior engineers.",
         "Collaborated with cross-functional stakeholders to translate complex operational requirements into production-ready systems."
       ]
@@ -32,8 +32,8 @@ export default function Experience({ items = [] }: ExperienceProps) {
     {
       id: "2",
       period: "2020 – 2022",
-      title: "Backend Engineer",
-      company: "PT Telkom Indonesia",
+      title: "Technical Leader / Senior Web Engineer",
+      company: "Various Platforms",
       highlights: [
         "Maintained and optimized high-traffic mobile APIs for national telecom products, ensuring production reliability and performance.",
         "Implemented real-time data ingestion and monitoring systems using Elasticsearch and Node.js for large-volume media record processing.",
@@ -43,8 +43,8 @@ export default function Experience({ items = [] }: ExperienceProps) {
     {
       id: "3",
       period: "2019 – 2020",
-      title: "Web Engineer",
-      company: "Various Platforms (Hungry/Other, G-Meds)",
+      title: "Backend Engineer",
+      company: "Freelance",
       highlights: [
         "Delivered core backend features for pharmaceutical and document management systems within distributed international teams.",
         "Developed responsive administrative dashboards and integrated secure APIs to improve operational visibility for clinic partners."
@@ -53,7 +53,6 @@ export default function Experience({ items = [] }: ExperienceProps) {
   ];
 
   const featuredItems = displayItems.slice(0, 3);
-  const olderItems = displayItems.slice(3);
 
   return (
     <section id="experience" className="section split">
@@ -79,7 +78,7 @@ export default function Experience({ items = [] }: ExperienceProps) {
                 <p className="company-label">{item.company}</p>
                 <ul>
                   {item.highlights.map((highlight, hIndex) => (
-                    <li key={hIndex}>{highlight}</li>
+                    <li key={hIndex} className={hIndex >= 2 ? 'desktop-only' : ''}>{highlight}</li>
                   ))}
                 </ul>
               </div>
@@ -87,20 +86,12 @@ export default function Experience({ items = [] }: ExperienceProps) {
           ))}
         </div>
 
-        {olderItems.length > 0 && (
-          <div className="earlier-experience mt-20 pt-16 border-t border-ink/5">
-            <h4 className="font-mono text-[10px] uppercase tracking-widest text-terra mb-12">Career Foundations</h4>
-            <div className="earlier-grid grid grid-cols-1 md:grid-cols-2 gap-8">
-              {olderItems.map((item) => (
-                <div key={item.id} className="earlier-item">
-                  <span className="block font-mono text-[9px] opacity-40 mb-1">{item.period}</span>
-                  <strong className="block text-sm mb-1">{item.title}</strong>
-                  <span className="block text-xs opacity-60">{item.company}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        <div className="earlier-experience mt-20 pt-16 border-t border-ink/5">
+          <h4 className="font-mono text-[10px] uppercase tracking-widest text-terra mb-6">Earlier experience</h4>
+          <p className="text-ink/80 leading-relaxed text-sm lg:text-base">
+            Earlier web engineering roles across Laravel, CodeIgniter, MySQL, frontend implementation, and production support.
+          </p>
+        </div>
       </div>
     </section>
   );

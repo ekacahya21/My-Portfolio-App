@@ -12,26 +12,26 @@ export default function Skills({ items = [] }: SkillsProps) {
   const displayItems = (items && items.length > 0) ? items : [
     {
       id: "1",
-      title: "Primary Engineering Depth",
-      skills: "Node.js, TypeScript, NestJS, Express.js, PostgreSQL, REST APIs, Microservices, API Design, System Architecture",
+      title: "Primary depth",
+      skills: "Node.js, TypeScript, NestJS, Express.js, REST APIs, PostgreSQL, Redis",
       order: 0
     },
     {
       id: "2",
-      title: "Infrastructure & Delivery",
-      skills: "Docker, Redis, Nginx, GitLab CI/CD, MySQL, Elasticsearch, Deployment Pipelines, Monitoring, Production Readiness",
+      title: "Frontend",
+      skills: "React, Next.js, Tailwind, HTML, CSS",
       order: 1
     },
     {
       id: "3",
-      title: "Technical Leadership",
-      skills: "Code Reviews, System Design, Documentation, Mentoring, Agile Delivery, Stakeholder Communication, API Contracts",
+      title: "Infrastructure",
+      skills: "Docker, GitLab CI/CD, Nginx",
       order: 2
     },
     {
       id: "4",
-      title: "Full-Stack Breadth",
-      skills: "React, Vue, Nuxt, HTML5, CSS3, TailwindCSS, Redis, Dashboard Development, Operational Workflows",
+      title: "Leadership",
+      skills: "Code review, mentoring, documentation, Agile/Scrum",
       order: 3
     }
   ];

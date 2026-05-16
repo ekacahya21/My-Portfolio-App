@@ -31,8 +31,13 @@
     @apply bg-canvas text-ink font-body antialiased;
     margin: 0;
     overflow-x: hidden;
-    font-size: 17px;
+    font-size: 18px; /* Increased for mobile readability */
     line-height: 1.6;
+  }
+  @media (min-width: 1024px) {
+    body {
+      font-size: 17px;
+    }
   }
 
   h1, h2, h3, h4 {
@@ -74,6 +79,15 @@
 
 .eyebrow {
   @apply font-mono text-[11px] uppercase tracking-[0.2em] text-terra mb-6 block;
+}
+
+/* Visibility Utilities */
+.mobile-only {
+  @apply block lg:hidden;
+}
+
+.desktop-only {
+  @apply hidden lg:block;
 }
 
 /* Site Header */
@@ -165,11 +179,11 @@
 }
 
 .button {
-  @apply px-8 py-3 rounded-md font-mono text-[11px] uppercase tracking-widest transition-all duration-300 inline-flex items-center justify-center no-underline border;
+  @apply px-8 py-4 lg:py-3 rounded-md font-mono text-[12px] lg:text-[11px] uppercase tracking-widest transition-all duration-300 inline-flex items-center justify-center no-underline border text-center;
 }
 
 .button.large {
-  @apply px-10 py-5 text-[12px];
+  @apply px-10 py-5 text-[13px] lg:text-[12px] w-full sm:w-auto;
 }
 
 .button.primary {
@@ -228,7 +242,7 @@
 /* Metrics Bar */
 .metrics {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
   border-top: 1px solid rgba(18, 25, 21, 0.1);
   border-bottom: 1px solid rgba(18, 25, 21, 0.1);
   background-color: var(--color-canvas);
@@ -256,6 +270,17 @@
   }
   .metrics article:last-child {
     border-right: none;
+  }
+}
+@media (max-width: 1023px) {
+  .metrics article:nth-child(odd) {
+    border-right: 1px solid rgba(18, 25, 21, 0.1);
+  }
+  .metrics article:nth-child(1), .metrics article:nth-child(2) {
+    border-bottom: 1px solid rgba(18, 25, 21, 0.1);
+  }
+  .metrics article {
+    @apply p-6 border-ink/10;
   }
 }
 
@@ -432,7 +457,7 @@
 }
 
 .timeline {
-  @apply space-y-32;
+  @apply space-y-20 lg:space-y-32;
 }
 
 .timeline article {
@@ -561,7 +586,11 @@
 }
 
 .contact-actions {
-  @apply flex flex-wrap gap-6 mt-12;
+  @apply flex flex-col sm:flex-row flex-wrap gap-4 lg:gap-6 mt-12 w-full;
+}
+
+.contact-actions .button {
+  @apply w-full sm:w-auto;
 }
 
 .button.primary.light {
@@ -577,7 +606,11 @@
 }
 
 .contact-panel a {
-  @apply flex items-center text-canvas/60 hover:text-canvas transition-all duration-300 py-2 border-b border-canvas/5;
+  @apply flex items-center bg-canvas/5 hover:bg-canvas/10 text-canvas/80 hover:text-canvas transition-all duration-300 py-4 lg:py-3 px-6 rounded-md border border-canvas/10 w-full;
+}
+
+.contact-panel a span {
+  @apply font-mono text-[13px] lg:text-[11px] uppercase tracking-widest ml-6 font-bold;
 }
 
 .contact-panel a svg, .contact-panel a div {

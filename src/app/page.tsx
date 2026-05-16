@@ -132,7 +132,7 @@ export default function Home() {
         </p>
       </section>
 
-      <section className="section process">
+      <section className="section process desktop-only">
         <div className="section-heading">
           <p className="section-kicker">How I work</p>
           <h2>From unclear workflow to production-ready system.</h2>
@@ -158,7 +158,7 @@ export default function Home() {
 
       <Work projects={data.projects} />
 
-      <section id="decisions" className="section decisions">
+      <section id="decisions" className="section decisions desktop-only">
         <div className="section-heading">
           <p className="section-kicker">Senior-level ownership</p>
           <h2>Engineering decisions that drive quality.</h2>
@@ -206,38 +206,38 @@ export default function Home() {
           <p>
             I am available for backend-heavy product work, internal tools, API platforms, technical leadership, and performance-focused web engineering.
           </p>
-          <div className="contact-actions">
+          <div className="contact-actions desktop-only">
             <a className="button primary light" href={`mailto:${content.email}`}>Email me</a>
             {content.profileUrl && <a className="button secondary light" href={content.profileUrl} download>Download CV</a>}
           </div>
         </div>
         <div className="contact-panel">
           <a href={`mailto:${content.email}`} title="Email" aria-label="Email">
-            <Mail size={28} strokeWidth={1.5} />
-            <span className="text-sm uppercase tracking-widest font-mono ml-6">Email</span>
+            <Mail size={24} strokeWidth={1.5} />
+            <span>Email me</span>
           </a>
-          {content.linkedin && (
-            <a href={content.linkedin} target="_blank" rel="noreferrer" title="LinkedIn" aria-label="LinkedIn">
-              <LinkedinIcon size={28} />
-              <span className="text-sm uppercase tracking-widest font-mono ml-6">LinkedIn</span>
-            </a>
-          )}
           {content.profileUrl && (
             <a href={content.profileUrl} download title="Download CV" aria-label="Download CV">
-              <Download size={28} />
-              <span className="text-sm uppercase tracking-widest font-mono ml-6">Download CV</span>
+              <Download size={24} />
+              <span>Download CV</span>
+            </a>
+          )}
+          {content.linkedin && (
+            <a href={content.linkedin} target="_blank" rel="noreferrer" title="LinkedIn" aria-label="LinkedIn">
+              <LinkedinIcon size={24} />
+              <span>LinkedIn</span>
             </a>
           )}
           {content.github && (
             <a href={content.github} target="_blank" rel="noreferrer" title="GitHub" aria-label="GitHub">
-              <GithubIcon size={28} />
-              <span className="text-sm uppercase tracking-widest font-mono ml-6">GitHub</span>
+              <GithubIcon size={24} />
+              <span>GitHub</span>
             </a>
           )}
           {content.instagram && (
             <a href={content.instagram} target="_blank" rel="noreferrer" title="Instagram" aria-label="Instagram">
-              <InstagramIcon size={28} />
-              <span className="text-sm uppercase tracking-widest font-mono ml-6">Instagram</span>
+              <InstagramIcon size={24} />
+              <span>Instagram</span>
             </a>
           )}
         </div>

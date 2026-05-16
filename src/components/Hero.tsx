@@ -126,8 +126,8 @@ export default function Hero({ name, title, copy, metadata, email, linkedin, cvU
           <div className="hero-actions" aria-label="Contact actions">
             <a className="button primary large" href={`mailto:${email || 'nanangcahya21@gmail.com'}`}>Email me</a>
             {cvUrl && <a className="button secondary large font-bold border-terra/40 text-ink" href={cvUrl} download>Download CV</a>}
-            {linkedin && <a className="button secondary large" href={linkedin} target="_blank" rel="noreferrer">LinkedIn</a>}
-            <a className="button secondary large" href="#work">View projects</a>
+            {linkedin && <a className="button secondary large desktop-only" href={linkedin} target="_blank" rel="noreferrer">LinkedIn</a>}
+            <a className="button secondary large desktop-only" href="#work">View projects</a>
           </div>
         </motion.div>
         
@@ -156,20 +156,20 @@ export default function Hero({ name, title, copy, metadata, email, linkedin, cvU
           </div>
           <div className="hero-skill-list">
             <article>
-              <span>Primary depth</span>
-              <strong>Node.js, TypeScript, NestJS, ExpressJS, REST API, GraphQL, PostgreSQL</strong>
+              <span>Core role</span>
+              <strong>Backend-focused full-stack engineer</strong>
             </article>
             <article>
-              <span>System ownership</span>
-              <strong>Microservice architecture, API integration, scalability, role-based workflows</strong>
+              <span>Primary stack</span>
+              <strong>Node.js, TypeScript, NestJS, PostgreSQL, Redis</strong>
             </article>
             <article>
-              <span>Delivery quality</span>
-              <strong>GitLab CI/CD, Docker, Nginx, code reviews, documentation, mentoring</strong>
+              <span>Focus</span>
+              <strong>APIs, microservices, operational systems</strong>
             </article>
             <article>
-              <span>Working breadth</span>
-              <strong>React, Vue, Nuxt, Redis, MySQL, Elasticsearch, operational dashboards</strong>
+              <span>Delivery</span>
+              <strong>CI/CD, code review, documentation, mentoring</strong>
             </article>
           </div>
         </motion.aside>

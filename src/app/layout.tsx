@@ -4,6 +4,7 @@ import AdminBar from "@/components/AdminBar";
 import MainLayout from "@/components/MainLayout";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://ekacahya.web.app'),
   title: "Nanang Eka Cahya Pernata | Senior Web Engineer",
   description: "Backend-focused full-stack engineer building reliable API platforms, microservices, and operational systems.",
   openGraph: {

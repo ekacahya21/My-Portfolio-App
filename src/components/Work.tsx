@@ -26,45 +26,34 @@ export default function Work({ projects = [] }: WorkProps) {
       id: "1",
       company: "PT Telkom Indonesia",
       period: "2022 – Present",
-      title: "Online Single Submission (OSS)",
-      result: "Led backend delivery for a national licensing workflow with review visibility, role-based approvals, and CI/CD release discipline.",
+      title: "Online Single Submission",
+      result: "Led backend delivery for a national licensing workflow with role-based approvals, review visibility, and CI/CD release discipline.",
       description: "Designed API contracts, service boundaries, PostgreSQL data models, Redis-backed workflows, and deployment pipelines for operational stakeholders.",
-      technicalDepth: "Node.js, NestJS, PostgreSQL, Redis, GitLab CI/CD, Microservices",
-      scaleImpact: "Impact: Improved review traceability, reduced manual coordination, and established production release consistency for a national-scale platform.",
+      technicalDepth: "Node.js, NestJS, PostgreSQL, Redis, GitLab CI/CD",
+      scaleImpact: "Improved traceability and reduced manual coordination across operational review workflows.",
       status: "Featured Case Study"
-    },
-    {
-      id: "2",
-      company: "PT Telkom Indonesia",
-      period: "2021 – 2022",
-      title: "MyTelkomsel Mobile App APIs",
-      result: "Maintained and improved production mobile APIs for a national telecom product with millions of active users.",
-      description: "Optimized API response times and improved error handling for high-volume mobile traffic during a major service transition.",
-      technicalDepth: "Node.js, Express.js, MySQL, Redis, Nginx, API Optimization",
-      scaleImpact: "Impact: Improved API maintainability, deployment consistency, and migration readiness for high-pressure mobile service teams.",
-      status: "Case study available"
     },
     {
       id: "3",
       company: "PT Telkom Indonesia",
       period: "2020 – 2021",
       title: "Media Monitoring System",
-      result: "Delivered a monitoring backend and dashboard for operational media review, handling large-volume data workflows.",
+      result: "Delivered monitoring backend and dashboard workflows for operational media review.",
       description: "Built the ingestion pipeline and administrative dashboard to monitor media sentiment and processing status in real-time.",
-      technicalDepth: "Node.js, Vue.js, PostgreSQL, Elasticsearch, Real-time Ingestion",
-      scaleImpact: "Impact: Improved visibility across monitoring workflows and reduced dependency on manual report checking for enterprise teams.",
+      technicalDepth: "Node.js, PostgreSQL, Redis, dashboard APIs",
+      scaleImpact: "Improved visibility across ingestion, filtering, and review processes.",
       status: "Case study available"
     },
     {
-      id: "4",
-      company: "Freelance / Early Career",
-      period: "2018 – 2019",
-      title: "G-Meds Health Platform",
-      result: "Developed core backend features for pharmaceutical procurement and distribution systems with distributed international teams.",
-      description: "Implemented inventory management, order processing, and supplier integration APIs to digitize clinical supply chains.",
-      technicalDepth: "Node.js, Express, MySQL, REST APIs, Documentation",
-      scaleImpact: "Impact: Digitized manual pharmaceutical workflows, improving order accuracy and inventory visibility for clinic partners.",
-      status: "Archive case study"
+      id: "2",
+      company: "PT Telkom Indonesia",
+      period: "2021 – 2022",
+      title: "MyTelkomsel Mobile App APIs",
+      result: "Maintained production mobile APIs for a national telecom product.",
+      description: "Optimized API response times and improved error handling for high-volume mobile traffic during a major service transition.",
+      technicalDepth: "Node.js, NestJS, Express.js, Redis, MySQL",
+      scaleImpact: "Improved maintainability, deployment consistency, and migration readiness.",
+      status: "Case study available"
     }
   ];
 
@@ -78,7 +67,7 @@ export default function Work({ projects = [] }: WorkProps) {
         {displayProjects.map((project, index) => (
           <motion.article 
             key={project.id} 
-            className="work-card"
+            className={`work-card ${index >= 3 ? 'desktop-only' : ''}`}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -93,24 +82,27 @@ export default function Work({ projects = [] }: WorkProps) {
               <span className="result-label">RESULT</span>
               <p className="result-line-bold">{project.result}</p>
             </div>
-            <p className="project-description-text">{project.description}</p>
-            <dl className="proof-list">
+            <p className="project-description-text desktop-only">{project.description}</p>
+            <dl className="proof-list mt-8 lg:mt-10 pt-8 lg:pt-10">
               <div>
-                <dt>Technical depth</dt>
-                <dd>{project.technicalDepth}</dd>
+                <dt>Stack</dt>
+                <dd className="font-mono text-[14px] lg:text-[15px] opacity-80">{project.technicalDepth}</dd>
               </div>
               <div>
-                <dt>Scale and impact</dt>
-                <dd className="impact-text">{project.scaleImpact}</dd>
+                <dt>Impact</dt>
+                <dd className="impact-text font-normal">{project.scaleImpact.replace(/^Impact:\s*/, '')}</dd>
               </div>
             </dl>
             {project.caseStudyUrl ? (
-              <a className="text-link" href={project.caseStudyUrl}>Featured case study</a>
+              <a className="text-link mt-8 block" href={project.caseStudyUrl}>Read case study →</a>
             ) : (
-              <span className="case-status">{project.status || "Case study coming soon"}</span>
+              <span className="case-status mt-8 block text-terra font-mono text-[10px] uppercase tracking-widest">{project.status || "Case study coming soon"}</span>
             )}
           </motion.article>
         ))}
+      </div>
+      <div className="mt-12 text-center mobile-only">
+         <a href="#" className="button secondary">View more projects</a>
       </div>
     </section>
   );
