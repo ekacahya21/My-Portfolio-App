@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nanang Eka Cahya Pernata - Portfolio
 
-## Getting Started
+A professional, high-performance portfolio website built to showcase engineering experience, production-level projects, and technical skills. The application features a fully responsive design (with a highly curated "fast pitch" layout optimized for mobile recruiters) and a secured admin dashboard to manage content dynamically.
 
-First, run the development server:
+## Tech Stack
+
+- **Framework:** Next.js (App Router)
+- **Styling:** Tailwind CSS + Custom CSS architecture
+- **Animations:** Framer Motion
+- **Database:** Firebase Firestore (for dynamic content management)
+- **Authentication:** Firebase Auth (for Admin Dashboard)
+- **Hosting:** Firebase Hosting
+
+## Features
+
+- **Dynamic Content Management:** Projects, experience, skills, and site copy are manageable via a built-in `/admin/dashboard`.
+- **Mobile Optimized ("Fast Pitch"):** The mobile view strips away secondary content to quickly answer the most critical recruiter questions (Who are you? What role? What projects?) and presents clear Call-to-Actions (Download CV, Email me).
+- **Secure Admin Panel:** Protected by Firebase Authentication to prevent unauthorized edits.
+- **Robust SSR/Static Support:** Leveraging Next.js for excellent SEO and fast initial page loads.
+
+## Local Setup
+
+### 1. Clone the repository
+
+```bash
+git clone git@github.com:ekacahya21/My-Portfolio-App.git
+cd My-Portfolio-App
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Environment Variables
+
+Create a `.env.local` file in the root of the project. You will need to add your Firebase configuration credentials:
+
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY="your-api-key"
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="ekacahya.firebaseapp.com"
+NEXT_PUBLIC_FIREBASE_PROJECT_ID="ekacahya"
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="ekacahya.firebasestorage.app"
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="your-sender-id"
+NEXT_PUBLIC_FIREBASE_APP_ID="your-app-id"
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID="your-measurement-id"
+```
+
+*(Note: You can find these values in your Firebase Console > Project Settings > General).*
+
+### 4. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application. The admin dashboard is accessible at `/admin/dashboard`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses the Next.js Web Frameworks integration with Firebase Hosting. This means Firebase handles the `next build` process automatically during deployment.
 
-## Learn More
+### Deploying to Firebase
 
-To learn more about Next.js, take a look at the following resources:
+1. **Login to Firebase CLI (if you haven't already)**
+   ```bash
+   npx firebase-tools login
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Deploy to production**
+   ```bash
+   npx firebase-tools deploy --project ekacahya
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Upon completion, the site will be live at `https://ekacahya.web.app`.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Domain Management
+If you wish to map a custom domain (e.g., `nanangcahya.com`), you can configure this directly within the Firebase Console under **Hosting > Add Custom Domain**.
