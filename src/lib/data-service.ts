@@ -58,6 +58,13 @@ export async function getProjects() {
   return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Project));
 }
 
+export async function getProjectById(id: string) {
+  if (!db) return null;
+  const docRef = doc(db, "projects", id);
+  const docSnap = await getDoc(docRef);
+  return docSnap.exists() ? ({ id: docSnap.id, ...docSnap.data() } as Project) : null;
+}
+
 export async function saveProject(project: Project) {
   if (!db) return;
   const docRef = doc(db, "projects", project.id);
