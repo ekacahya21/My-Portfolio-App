@@ -18,3 +18,5 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_EKACAHYA }}
           channelId: live
           projectId: ekacahya
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
