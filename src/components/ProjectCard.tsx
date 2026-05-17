@@ -47,7 +47,7 @@ export default function ProjectCard({ project, index, isDesktopOnlyMobile = fals
           <dd className="impact-text font-normal">{project.scaleImpact.replace(/^Impact:\s*/, '')}</dd>
         </div>
       </dl>
-      <div className="mt-8 flex flex-wrap gap-4 items-center">
+      <div className="mt-auto pt-8 flex flex-wrap gap-4 items-center">
         <Link href={`/projects/${project.id}`} className="text-link font-mono text-[11px] uppercase tracking-widest">
           View Details →
         </Link>
