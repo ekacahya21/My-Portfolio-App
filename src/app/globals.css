@@ -629,7 +629,7 @@ footer {
 /* Material Symbols Fix */
 /* Rich Text Content Styling */
 .rich-text-content {
-  @apply space-y-6;
+  @apply space-y-6 break-words whitespace-pre-wrap;
 }
 
 .rich-text-content p {

@@ -72,7 +72,7 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-24">
-        <div className="lg:col-span-2 space-y-16 lg:space-y-24">
+        <div className="lg:col-span-2 space-y-16 lg:space-y-24 overflow-hidden">
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
